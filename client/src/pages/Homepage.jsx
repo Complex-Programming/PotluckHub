@@ -39,7 +39,7 @@ function Homepage() {
             </section>
 
             {/* CTA BANNER */}
-            <section>
+            <section className="cta-container">
                 <h2>Ready to get started?</h2>
                 <p>Join PotluckHub and start organizing your next gathering</p>
                 <button className="btn-primary">Create your account →</button>
