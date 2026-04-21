@@ -1,0 +1,46 @@
+.homepage-container {
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--background);
+}
+
+/* HERO CONTAINER */
+
+.hero-container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 2rem;
+    gap: 0.8rem;
+    width: 50%;
+    align-items: center;
+}
+
+.hero-container h1 {
+    font-size: var(--header-font-size);
+    font-weight: 600;
+}
+
+.hero-container p {
+    font-size: var(--normal-font-size);
+    color: var(--text-secondary);
+}
+
+.btn-primary {
+    color: white;
+    padding: 0.5rem;
+    width: 30%;
+    outline: none;
+    border: none;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: var(--normal-font-size);
+    background-color: var(--primary);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+}

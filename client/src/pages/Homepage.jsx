@@ -1,5 +1,6 @@
 import react from "react";
 import "../styles/Homepage.css"
+import { CalendarDays, ChefHat, Users } from 'lucide-react'
 
 function Homepage() {
     return (
@@ -15,14 +16,23 @@ function Homepage() {
             {/* FEATURE CARDS */}
             <section className="features-container">
                 <div className="feature-card">
+                    <div className="card-icon">
+                        <CalendarDays size={28} color="var(--primary)" />
+                    </div>
                     <h3>Create Events</h3>
                     <p>Set up potluck gatherings with date, time, and location. Invite guests and track RSVPs effortlessly.</p>
                 </div>
                 <div className="card">
+                    <div className="card-icon">
+                        <ChefHat size={28} color="var(--primary)" />
+                    </div>
                     <h3>Claim Dishes</h3>
                     <p>Browse the recipe library and claim what you'll bring. See what others are bringing in real-time.</p>
                 </div>
                 <div className="card">
+                    <div className="card-icon">
+                       <Users size={28} color="var(--primary)" />
+                    </div>
                     <h3>Share Recipes</h3>
                     <p>Build a shared recipe library with your community. Rate and review dishes after each event.</p>
                 </div>
