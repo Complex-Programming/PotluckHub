@@ -1,0 +1,28 @@
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: var(--normal-font-size);
+}
+
+#root {
+    width: 100%;
+    min-height: 100vh;
+    --primary: #F97316;        /* orange - buttons, icons */
+    --primary-hover: #EA6C0A;  /* darker orange - hover state */
+    --primary-light: #FEF0E7;  /* light orange - card backgrounds */
+    --text-primary: #1A1A1A;   /* near black - headings */
+    --text-secondary: #6B7280; /* gray - body text */
+    --background: #F9FAFB;     /* off white - page background */
+    --surface: #FFFFFF;        /* white - cards */
+    --border: #E5E7EB;         /* light gray - card borders */
+    --header-font-size: 1.5rem;
+    --sub-heading-font-size: 1.1rem;
+    --description-font-size: 0.6rem;
+    --normal-font-size: 0.7rem;
+}
+
+#app {
+    font-size: var(--normal-font-size);
+}
