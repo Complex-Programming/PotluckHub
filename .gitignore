@@ -24,3 +24,10 @@ dist-ssr
 *.sln
 *.sw?
 *.env
+/client/node_modules
+/client/node_modules/.bin
+/client/node_modules/.bin
+/client/node_modules/vite
+/client/node_modules
+
+/server/node_modules
