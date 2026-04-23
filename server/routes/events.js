@@ -1,9 +1,10 @@
-import { Router } from 'express';
-const router = Router();
+import express from 'express';
+import { getAllEvents, getEventById, createEvent } from '../controllers/events.js';
 
-router.get('/', (req, res) => res.json([]));
-router.get('/:id', (req, res) => res.json({}));
-router.post('/', (req, res) => res.status(201).json({}));
-router.delete('/:id', (req, res) => res.status(204).send());
+const router = express.Router();
+
+router.get('/', getAllEvents);
+router.get('/:id', getEventById);
+router.post('/', createEvent);
 
 export default router;

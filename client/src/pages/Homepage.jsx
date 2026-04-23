@@ -1,9 +1,24 @@
-import react from "react";
-import "../styles/Homepage.css"
+import { useState, useEffect } from "react";
+import "../styles/Homepage.css";
 import { Link } from 'react-router';
-import { CalendarDays, ChefHat, Users } from 'lucide-react'
+import { CalendarDays, ChefHat, Users } from 'lucide-react';
+import { getAllEvents } from '../services/EventsAPI';
 
-function Homepage() {
+export default function Homepage() {
+    // 1. Set up state to hold the events from the database
+    const [events, setEvents] = useState([]);
+
+    // 2. Fetch the events when the page loads
+    useEffect(() => {
+        const fetchEvents = async () => {
+            const data = await getAllEvents();
+            if (data) {
+                setEvents(data);
+            }
+        };
+        fetchEvents();
+    }, []);
+
     return (
         <div className="homepage-container">
 
@@ -11,7 +26,8 @@ function Homepage() {
             <div className="hero-container">
                 <h1>Plan perfect potlucks, <br /> every time</h1>
                 <p>Coordinate dishes, track RSVPs, and share recipes with your community. No more duplicate dishes or forgotten plates.</p>
-                <Link to="/events" className="btn-primary">Get started free →</Link>            </div>
+                <Link to="/create-event" className="btn-primary">Host an Event</Link>
+            </div>
 
             {/* FEATURE CARDS */}
             <section className="features-container">
@@ -38,17 +54,40 @@ function Homepage() {
                 </div>
             </section>
 
+            {/* LIVE EVENTS FEED (NEW) */}
+            <section style={{ padding: '3rem 1rem', maxWidth: '800px', margin: '0 auto' }}>
+                <h2 style={{ textAlign: 'center', marginBottom: '2rem' }}>Upcoming Potlucks</h2>
+                
+                {events.length === 0 ? (
+                    <p style={{ textAlign: 'center' }}>No events found. Be the first to host one!</p>
+                ) : (
+                    <div style={{ display: 'grid', gap: '1.5rem' }}>
+                        {events.map(event => (
+                            <div key={event.id} className="feature-card" style={{ textAlign: 'left', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <div>
+                                    <h3 style={{ marginTop: 0 }}>{event.title}</h3>
+                                    <p style={{ margin: '5px 0' }}><strong>Date:</strong> {event.event_date ? event.event_date.split('T')[0] : 'TBD'}</p>
+                                    <p style={{ margin: '5px 0' }}><strong>Location:</strong> {event.location}</p>
+                                </div>
+                                <Link to={`/events/${event.id}`} className="btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>
+                                    RSVP
+                                </Link>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </section>
+
             {/* CTA BANNER */}
             <section className="cta-container">
                 <h2>Ready to get started?</h2>
                 <p>Join PotluckHub and start organizing your next gathering</p>
-                <Link to="/signup" className="btn-primary">Create your account →</Link>            </section>
+                <Link to="/register" className="btn-primary">Create your account</Link>
+            </section>
 
             <footer>
-                2026 PotluckHub. This is a wireframe preview.
+                2026 PotluckHub.
             </footer>
         </div>
     )
 }
-
-export default Homepage

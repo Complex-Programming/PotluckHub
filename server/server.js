@@ -15,7 +15,7 @@ const PORT = Number(process.env.PORT) || 8080;
 if (!process.env.PORT) {
     console.warn('PORT is not set. Defaulting to 8080.');
 } else {
-    console.log(`Using PORT ${PORT}.`);
+    console.log(`Using PORT ${PORT}., should be 8080`);
 }
 
 if (!Number.isInteger(PORT) || PORT <= 0 || PORT > 65535) {
@@ -30,13 +30,19 @@ app.use(express.json());
 app.get('/', (req, res) => {
     res.send('Server is running!');
 });
-
+//routes
 app.use('/api/events', eventsRouter);
 app.use('/api/recipes', recipesRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/rsvps', rsvpsRouter);
 app.use('/api/auth', registerRouter);
 
+// Basic health check endpoint
+app.get('/', (req, res) => {
+    res.status(200).send('PotluckHub API is running on GCP!');
+});
+
+
 app.listen(PORT, () => {
-    console.log(`Server is running on PORT http://localhost:${PORT}`);
+    console.log(`Server is running on PORT ${PORT}`);
 })

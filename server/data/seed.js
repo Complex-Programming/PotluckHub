@@ -1,4 +1,4 @@
-import pool from '../db.js'
+import pool from '../config/database.js'
 
 const users = [
   { name: 'Alice Nguyen',  bio: 'Home cook obsessed with Southeast Asian flavors.', email: 'alice@example.com' },

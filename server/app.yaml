@@ -1,2 +1,10 @@
-runtime: nodejs20
+runtime: nodejs25
 env: standard
+
+env_variables:
+  PGUSER=postgres
+  PGPASSWORD=postgres
+  PGHOST=34.82.218.175
+  PGPORT=5432
+  PGDATABASE=postgres
+
