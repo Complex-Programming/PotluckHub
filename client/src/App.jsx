@@ -1,28 +1,21 @@
-import React from "react";
-import { Link, useRoutes } from "react-router";
-
-import Homepage from "./pages/Homepage.jsx";
-import Register from "./pages/Register.jsx";
+import { BrowserRouter, Routes, Route } from 'react-router';
+import Homepage from './pages/Homepage';
+import Register from "./pages/Register";
+import EventDetail from './pages/EventDetail';
+import RecipeLibrary from './pages/RecipeLibrary';
+import './App.css';
 
 function App() {
-  const element = useRoutes([
-    {
-      path: "/",
-      element: <Homepage />,
-    },
-    {
-      path: "/register",
-      element: <Register />,
-    },
-  ]);
-
   return (
-    <div className="App">
-      <div className="header">
-        <h1>PotluckHub</h1>
-      </div>
-      {element}
-    </div>
+      {/* The router controls which page component renders below the header */}
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/events/:id" element={<EventDetail />} />
+          <Route path="/recipes" element={<RecipeLibrary />} />
+        </Routes>
+      </BrowserRouter>
   );
 }
 
