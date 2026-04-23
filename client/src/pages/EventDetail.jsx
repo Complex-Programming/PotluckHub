@@ -1,72 +1,113 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router';
 import { getEventById } from '../services/EventsAPI';
+import { createRsvp, deleteRsvp, getAttendeesByEventId } from '../services/RSVPsAPI';
+import '../styles/EventDetail.css';
 
 export default function EventDetail() {
-    const { id } = useParams(); 
+    const { id } = useParams();
+    const currentUserId = 1;
     const [event, setEvent] = useState(null);
+    const [attendees, setAttendees] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [rsvpLoading, setRsvpLoading] = useState(false);
+    const [rsvpError, setRsvpError] = useState('');
 
     // Fetch the specific event data based on the URL ID
     useEffect(() => {
         const fetchEvent = async () => {
-            const data = await getEventById(id);
-            setEvent(data);
+            const [eventData, attendeesData] = await Promise.all([
+                getEventById(id),
+                getAttendeesByEventId(id)
+            ]);
+
+            setEvent(eventData);
+            setAttendees(attendeesData);
             setLoading(false);
         };
         fetchEvent();
     }, [id]);
 
+    const isRsvped = attendees.some((attendee) => attendee.id === currentUserId);
+
+    const handleRsvpToggle = async () => {
+        setRsvpLoading(true);
+        setRsvpError('');
+
+        try {
+            if (isRsvped) {
+                await deleteRsvp(currentUserId, id);
+            } else {
+                await createRsvp(currentUserId, id);
+            }
+
+            const attendeesData = await getAttendeesByEventId(id);
+            setAttendees(attendeesData);
+        } catch {
+            setRsvpError('Could not update RSVP. Please try again.');
+        } finally {
+            setRsvpLoading(false);
+        }
+    };
+
     // Handle loading and error states
-    if (loading) return <h2 style={{ textAlign: 'center', marginTop: '3rem' }}>Loading event details...</h2>;
-    if (!event) return <h2 style={{ textAlign: 'center', marginTop: '3rem' }}>Event not found!</h2>;
+    if (loading) return <h2 className="event-detail-status">Loading event details...</h2>;
+    if (!event) return <h2 className="event-detail-status">Event not found!</h2>;
 
     return (
-        <main style={{ padding: '2rem', maxWidth: '800px', margin: '0 auto' }}>
-            <Link to="/" style={{ display: 'inline-block', marginBottom: '1.5rem', color: 'var(--primary)', textDecoration: 'none', fontWeight: 'bold' }}>
+        <main className="event-detail-page">
+            <Link to="/" className="event-detail-back-link">
                 ← Back to Homepage
             </Link>
-            
-            <div style={{ background: '#ffffff', padding: '2rem', borderRadius: '12px', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }}>
+
+            <div className="event-detail-card">
                 {/* Event Header */}
-                <h1 style={{ marginTop: 0, fontSize: '2.5rem', color: '#222' }}>{event.title}</h1>
-                <p style={{ fontSize: '1.2rem', color: '#555', lineHeight: '1.6' }}>{event.description}</p>
-                
+                <h1 className="event-detail-title">{event.title}</h1>
+                <p className="event-detail-description">{event.description}</p>
+
                 {/* Event Metadata Grid */}
-                <div style={{ 
-                    display: 'grid', 
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
-                    gap: '1rem', 
-                    margin: '2rem 0', 
-                    padding: '1.5rem', 
-                    background: '#f8f9fa', 
-                    borderRadius: '8px',
-                    border: '1px solid #eee'
-                }}>
+                <div className="event-detail-meta-grid">
                     <div><strong>📅 Date:</strong> {event.event_date ? event.event_date.split('T')[0] : 'TBD'}</div>
                     <div><strong>⏰ Time:</strong> {event.event_time || 'TBD'}</div>
                     <div><strong>📍 Location:</strong> {event.location}</div>
                     <div><strong>👑 Host ID:</strong> {event.host_id}</div>
                 </div>
 
-                <hr style={{ border: 'none', borderTop: '1px solid #eaeaea', margin: '2.5rem 0' }} />
+                <hr className="event-detail-divider" />
 
                 {/* --- FUTURE PHASE PLACEHOLDERS --- */}
-                
+
                 {/* Feature 3: RSVPs */}
-                <section style={{ marginBottom: '3rem' }}>
+                <section className="event-detail-section">
                     <h2>Guest List</h2>
-                    <p style={{ color: '#666' }}><em>RSVP feature coming in Phase 4...</em></p>
-                    <button className="btn-primary" disabled style={{ opacity: 0.5, cursor: 'not-allowed' }}>
-                        RSVP to Event
+                    {attendees.length === 0 ? (
+                        <p className="event-detail-muted">No attendees yet.</p>
+                    ) : (
+                        <ul className="event-detail-attendee-list">
+                            {attendees.map((attendee) => (
+                                <li key={attendee.id}>
+                                    {attendee.name}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+
+                    <button
+                        className="btn-primary"
+                        onClick={handleRsvpToggle}
+                        disabled={rsvpLoading}
+                        id="event-detail-rsvp-button"
+                    >
+                        {rsvpLoading ? 'Updating...' : isRsvped ? 'Cancel RSVP' : 'RSVP to Event'}
                     </button>
+                    {rsvpError && <p className="event-detail-error">{rsvpError}</p>}
                 </section>
 
                 {/* Feature 4: Dish Claiming */}
                 <section>
                     <h2>Potluck Menu</h2>
-                    <p style={{ color: '#666' }}><em>Dish claiming feature coming in Phase 5...</em></p>
-                    <button className="btn-primary" disabled style={{ opacity: 0.5, cursor: 'not-allowed' }}>
+                    <p className="event-detail-muted"><em>Dish claiming feature coming in Phase 5...</em></p>
+                    <button className="btn-primary event-detail-disabled-button" disabled>
                         Bring a Dish
                     </button>
                 </section>

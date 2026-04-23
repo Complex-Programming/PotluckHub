@@ -15,6 +15,7 @@ export default function RecipeLibrary() {
   const [error, setError] = useState('');
   const [formData, setFormData] = useState(initialFormState);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showAddRecipeForm, setShowAddRecipeForm] = useState(false);
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -61,42 +62,56 @@ export default function RecipeLibrary() {
       <p className="recipe-subtitle">Browse shared recipes and add a new one.</p>
 
       <section className="recipe-form-section">
-        <h2>Add Recipe</h2>
-        <form className="recipe-form" onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="name"
-            placeholder="Recipe name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-          <textarea
-            name="description"
-            placeholder="Short description"
-            value={formData.description}
-            onChange={handleChange}
-            rows={3}
-          />
-          <select name="category" value={formData.category} onChange={handleChange}>
-            <option value="Appetizer">Appetizer</option>
-            <option value="Main">Main</option>
-            <option value="Side">Side</option>
-            <option value="Dessert">Dessert</option>
-            <option value="Drink">Drink</option>
-          </select>
-          <input
-            type="url"
-            name="image_url"
-            placeholder="Image URL (optional)"
-            value={formData.image_url}
-            onChange={handleChange}
-          />
-          <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Adding...' : 'Add Recipe'}
+        <div className="recipe-form-header">
+          <h2>Add Recipe</h2>
+          <button
+            type="button"
+            className="recipe-toggle-button"
+            onClick={() => setShowAddRecipeForm((prev) => !prev)}
+          >
+            {showAddRecipeForm ? 'Hide Form' : 'Show Form'}
           </button>
-        </form>
-        {error && <p className="recipe-error">{error}</p>}
+        </div>
+
+        {showAddRecipeForm && (
+          <>
+            <form className="recipe-form" onSubmit={handleSubmit}>
+              <input
+                type="text"
+                name="name"
+                placeholder="Recipe name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+              <textarea
+                name="description"
+                placeholder="Short description"
+                value={formData.description}
+                onChange={handleChange}
+                rows={3}
+              />
+              <select name="category" value={formData.category} onChange={handleChange}>
+                <option value="Appetizer">Appetizer</option>
+                <option value="Main">Main</option>
+                <option value="Side">Side</option>
+                <option value="Dessert">Dessert</option>
+                <option value="Drink">Drink</option>
+              </select>
+              <input
+                type="url"
+                name="image_url"
+                placeholder="Image URL (optional)"
+                value={formData.image_url}
+                onChange={handleChange}
+              />
+              <button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Adding...' : 'Add Recipe'}
+              </button>
+            </form>
+            {error && <p className="recipe-error">{error}</p>}
+          </>
+        )}
       </section>
 
       <section className="recipe-list-section">

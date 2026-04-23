@@ -1,0 +1,84 @@
+.event-detail-status {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.event-detail-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    text-align: left;
+}
+
+.event-detail-back-link {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.event-detail-card {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid #ececec;
+}
+
+.event-detail-title {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+    color: #222;
+}
+
+.event-detail-description {
+    color: #555;
+    line-height: 1.6;
+}
+
+.event-detail-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #eee;
+}
+
+.event-detail-divider {
+    border: none;
+    border-top: 1px solid #eaeaea;
+    margin: 2rem 0;
+}
+
+.event-detail-section {
+    margin-bottom: 2rem;
+}
+
+.event-detail-muted {
+    color: #666;
+}
+
+.event-detail-attendee-list {
+    margin-top: 0.75rem;
+    padding-left: 1.2rem;
+}
+
+#event-detail-rsvp-button {
+    margin-top: 1rem;
+    width: auto;
+    padding: 0.6rem 1rem;
+}
+
+.event-detail-error {
+    color: #b91c1c;
+    margin-top: 0.5rem;
+}
+
+.event-detail-disabled-button {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

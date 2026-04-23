@@ -1,7 +1,10 @@
 import { Router } from 'express';
+import { createRsvp, deleteRsvp, getAttendeesByEventId } from '../controllers/rsvps.js';
+
 const router = Router();
 
-router.post('/', (req, res) => res.status(201).json({}));
-router.delete('/', (req, res) => res.status(204).send());
+router.get('/:eventId', getAttendeesByEventId);
+router.post('/', createRsvp);
+router.delete('/', deleteRsvp);
 
 export default router;

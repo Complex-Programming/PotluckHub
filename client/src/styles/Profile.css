@@ -1,0 +1,32 @@
+.profile-status {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.profile-page {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    text-align: left;
+}
+
+.profile-email {
+    margin-bottom: 0.35rem;
+}
+
+.profile-bio {
+    margin-bottom: 1.25rem;
+    color: #555;
+}
+
+.profile-section {
+    margin-bottom: 1.5rem;
+}
+
+.profile-section-title {
+    margin-bottom: 0.5rem;
+}
+
+.profile-events-list {
+    padding-left: 1.2rem;
+}

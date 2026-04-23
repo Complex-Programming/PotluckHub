@@ -1,6 +1,8 @@
 import { Router } from 'express';
+import { getUserProfile } from '../controllers/users.js';
+
 const router = Router();
 
-router.get('/:id', (req, res) => res.json({}));
+router.get('/:id', getUserProfile);
 
 export default router;
