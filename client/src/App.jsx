@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router';
+import { BrowserRouter, HashRouter,Routes, Route } from 'react-router';
 import Homepage from './pages/Homepage';
 import Register from "./pages/Register";
 import EventDetail from './pages/EventDetail';

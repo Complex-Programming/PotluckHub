@@ -1,10 +1,10 @@
 runtime: nodejs25
 env: standard
 
+# Add Environment variables for connecting to the PostgreSQL database
 env_variables:
-  PGUSER=postgres
-  PGPASSWORD=postgres
-  PGHOST=34.82.218.175
-  PGPORT=5432
-  PGDATABASE=postgres
-
+  PGUSER: "postgres"
+  PGPASSWORD: "postgres"
+  PGHOST: "34.82.218.175"
+  PGPORT: "5432"
+  PGDATABASE: "postgres"

@@ -1,5 +1,3 @@
-
-
 Phase 3: Feature 2 — The Recipe Catalog
 
 Goal: Users can view the shared cookbook. We need dishes existing in the database before anyone can claim them.
@@ -37,19 +35,3 @@ Goal: Add the custom flair once the core app is flawlessly working.
     Backend (Tom/Dongping): Add the Review/Rating table logic if your team still wants to allow users to rate dishes after the event.
 
     Whole Team: Record the final GIF walkthrough for the README.
-
-2. Setup Render PostgreSQL Database
-Markdown
-
-**Goal:** Spin up the live database so the seed script has somewhere to write data.
-- [ ] Create a free PostgreSQL database on Render.
-- [ ] Create a `.env` file in the `server` directory with connection variables.
-- [ ] Create `config/database.js` and set up the `pg` connection pool.
-
-3. Initialize Express Backend & Placeholder Routes
-Markdown
-
-**Goal:** Get the API live so the frontend Home Page can actually fetch data.
-- [ ] Initialize standard Express boilerplate in `server.js`.
-- [ ] Create placeholder route files: `routes/events.js`, `routes/recipes.js`.
-- [ ] Deploy the backend repository to Render.
