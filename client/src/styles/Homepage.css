@@ -8,6 +8,28 @@
     gap: 1.25rem;
 }
 
+.homepage-header-nav {
+    width: 100%;
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    padding: 0.5rem 0;
+}
+
+.header-nav-button {
+    text-decoration: none;
+    color: #111;
+    border: 1px solid #d4d4d8;
+    border-radius: 6px;
+    padding: 0.45rem 0.9rem;
+    background: #fff;
+    font-size: 0.9rem;
+}
+
+.header-nav-button:hover {
+    background: #f4f4f5;
+}
+
 /* HERO CONTAINER */
 
 .hero-container {

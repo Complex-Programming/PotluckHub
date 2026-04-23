@@ -2,9 +2,9 @@
 
 CodePath WEB103 Final Project
 
-Designed and developed by: Tom Strzyz, Dongping Guo, James Paek, Eman Gurung
+Designed and developed by: Tom Strzyz, Dongping Guo, Eman Gurung
 
-🔗 Link to deployed app: https://github.com/jamespaek1/web103_finalproject
+🔗 Link to deployed app: 
 
 ## About
 

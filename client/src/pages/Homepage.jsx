@@ -21,6 +21,11 @@ export default function Homepage() {
 
     return (
         <div className="homepage-container">
+            <header className="homepage-header-nav">
+                <Link to="/events" className="header-nav-button">Events</Link>
+                <Link to="/recipes" className="header-nav-button">Recipes</Link>
+                <Link to="/profile" className="header-nav-button">Profile</Link>
+            </header>
 
             {/* HERO */}
             <div className="hero-container">
@@ -47,7 +52,7 @@ export default function Homepage() {
                 </div>
                 <div className="feature-card">
                     <div className="card-icon">
-                       <Users size={18} color="var(--primary)" />
+                        <Users size={18} color="var(--primary)" />
                     </div>
                     <h3>Share Recipes</h3>
                     <p>Build a shared recipe library with your community. Rate and review dishes after each event.</p>
@@ -57,7 +62,7 @@ export default function Homepage() {
             {/* LIVE EVENTS FEED (NEW) */}
             <section style={{ padding: '3rem 1rem', maxWidth: '800px', margin: '0 auto' }}>
                 <h2 style={{ textAlign: 'center', marginBottom: '2rem' }}>Upcoming Potlucks</h2>
-                
+
                 {events.length === 0 ? (
                     <p style={{ textAlign: 'center' }}>No events found. Be the first to host one!</p>
                 ) : (

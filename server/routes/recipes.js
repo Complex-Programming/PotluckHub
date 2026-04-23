@@ -1,8 +1,10 @@
-import { Router } from 'express';
-const router = Router();
+import express from 'express';
+import { getAllRecipes, getRecipeById, createRecipe } from '../controllers/recipes.js';
 
-router.get('/', (req, res) => res.json([]));
-router.get('/:id', (req, res) => res.json({}));
-router.post('/', (req, res) => res.status(201).json({}));
+const router = express.Router();
+
+router.get('/', getAllRecipes);
+router.get('/:id', getRecipeById);
+router.post('/', createRecipe);
 
 export default router;
