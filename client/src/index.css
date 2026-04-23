@@ -17,9 +17,10 @@
     --background: #F9FAFB;     /* off white - page background */
     --surface: #FFFFFF;        /* white - cards */
     --border: #E5E7EB;         /* light gray - card borders */
-    --h2-font-size: 1.2rem;
-    --description-font-size: 0.75rem;
-    --normal-font-size: 0.8rem;
+    --header-font-size: 1.5rem;
+    --sub-heading-font-size: 1.1rem;
+    --description-font-size: 0.6rem;
+    --normal-font-size: 0.7rem;
 }
 
 #app {
