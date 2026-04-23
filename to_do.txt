@@ -1,0 +1,68 @@
+
+    James: Initialize the React app, set up React Router, and create empty, blank page components (Home, EventDetail, RecipeLibrary).
+
+    Eman: Initialize the Express server, create empty routing files (routes/events.js, etc.), and wire them to server.js so they return empty arrays. Deploy this blank skeleton to Render immediately.
+
+Phase 2: Feature 1 — The Event Engine
+
+Goal: Users can view and create events. This is the anchor of the app; nothing else matters if there are no potlucks to attend.
+
+    Backend (Tom): Build the controllers/events.js logic. Write the SQL queries to GET all events, GET a single event by ID, and POST a new event.
+
+    Frontend (James): Build the services/EventsAPI.js connection. Create the Home page that lists all events, and build the "Create Event" form to submit data to Tom's new API.
+
+    Integration Checkpoint: James and Tom ensure that creating an event on the frontend successfully saves to the Render database.
+
+Phase 3: Feature 2 — The Recipe Catalog
+
+Goal: Users can view the shared cookbook. We need dishes existing in the database before anyone can claim them.
+
+    Backend (Dongping): Build the controllers/recipes.js logic. Write the SQL queries to GET all recipes and POST a new recipe.
+
+    Frontend (Eman): Build the services/RecipesAPI.js connection. Create the RecipeLibrary page that displays all the dishes as cards or a list. Add a simple form to submit a new recipe.
+
+    Integration Checkpoint: Eman and Dongping verify that a new recipe added via the UI shows up in the database.
+
+Phase 4: Feature 3 — The People & RSVPs
+
+Goal: Users have profiles and can say they are attending an event.
+
+    Backend (Tom): Write the endpoint to fetch a User's profile. Build the RSVP POST/DELETE logic (inserting/removing records in the user_to_event join table).
+
+    Frontend (James): Build the UserProfile page. Update the EventDetail page to include an "RSVP" button that hits Tom's endpoint, and render a list of attendees.
+
+Phase 5: Feature 4 — The Dish Claiming (The MVP Polish)
+
+Goal: The core "Potluck" action. Users can select a recipe to bring to a specific event.
+
+    Backend (Dongping): Build the complex logic to POST to the event_to_recipe join table. Include validation to ensure the exact same dish isn't claimed twice for the same event.
+
+    Frontend (Eman): Build the Dish Claim Modal. On the EventDetail page, add a "Bring a Dish" button. This should open a modal showing the Recipe Library, allow the user to select one, and close to update the event page.
+
+    Integration Checkpoint: Eman and Dongping test the claim flow heavily. If Eman claims "Potato Salad" for Event A, it must show up on the UI immediately.
+
+Phase 6: Post-MVP Custom Features (Only if time permits)
+
+Goal: Add the custom flair once the core app is flawlessly working.
+
+    Frontend (Eman/James): Implement the client-side sorting and filtering (by category: appetizer, main, dessert) on the RecipeLibrary page using React state.
+
+    Backend (Tom/Dongping): Add the Review/Rating table logic if your team still wants to allow users to rate dishes after the event.
+
+    Whole Team: Record the final GIF walkthrough for the README.
+
+2. Setup Render PostgreSQL Database
+Markdown
+
+**Goal:** Spin up the live database so the seed script has somewhere to write data.
+- [ ] Create a free PostgreSQL database on Render.
+- [ ] Create a `.env` file in the `server` directory with connection variables.
+- [ ] Create `config/database.js` and set up the `pg` connection pool.
+
+3. Initialize Express Backend & Placeholder Routes
+Markdown
+
+**Goal:** Get the API live so the frontend Home Page can actually fetch data.
+- [ ] Initialize standard Express boilerplate in `server.js`.
+- [ ] Create placeholder route files: `routes/events.js`, `routes/recipes.js`.
+- [ ] Deploy the backend repository to Render.

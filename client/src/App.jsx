@@ -1,26 +1,19 @@
-import React from 'react'
-import { Link, useRoutes } from 'react-router'
-
-import Homepage from "./pages/Homepage.jsx"
+import { BrowserRouter, Routes, Route } from 'react-router';
+import Homepage from './pages/Homepage';
+import EventDetail from './pages/EventDetail';
+import RecipeLibrary from './pages/RecipeLibrary';
+import './App.css';
 
 function App() {
-
-    const element  = useRoutes([
-        {
-            path: "/",
-            element: <Homepage/>
-        }
-    ])
-
-    return (
-        <div className="App">
-
-        <div className="header">
-            <h1>PotluckHub</h1>
-        </div>
-            {element}
-        </div>
-    )
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Homepage/>} />
+        <Route path="/events/:id" element={<EventDetail />} />
+        <Route path="/recipes" element={<RecipeLibrary />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

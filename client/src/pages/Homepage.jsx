@@ -1,5 +1,6 @@
 import react from "react";
 import "../styles/Homepage.css"
+import { Link } from 'react-router';
 import { CalendarDays, ChefHat, Users } from 'lucide-react'
 
 function Homepage() {
@@ -10,8 +11,7 @@ function Homepage() {
             <div className="hero-container">
                 <h1>Plan perfect potlucks, <br /> every time</h1>
                 <p>Coordinate dishes, track RSVPs, and share recipes with your community. No more duplicate dishes or forgotten plates.</p>
-                <button className="btn-primary">Get started free →</button>
-            </div>
+                <Link to="/events" className="btn-primary">Get started free →</Link>            </div>
 
             {/* FEATURE CARDS */}
             <section className="features-container">
@@ -42,8 +42,7 @@ function Homepage() {
             <section className="cta-container">
                 <h2>Ready to get started?</h2>
                 <p>Join PotluckHub and start organizing your next gathering</p>
-                <button className="btn-primary">Create your account →</button>
-            </section>
+                <Link to="/signup" className="btn-primary">Create your account →</Link>            </section>
 
             <footer>
                 2026 PotluckHub. This is a wireframe preview.
