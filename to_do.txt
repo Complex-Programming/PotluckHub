@@ -1,6 +1,4 @@
 
-    James: Initialize the React app, set up React Router, and create empty, blank page components (Home, EventDetail, RecipeLibrary).
-
     Eman: Initialize the Express server, create empty routing files (routes/events.js, etc.), and wire them to server.js so they return empty arrays. Deploy this blank skeleton to Render immediately.
 
 Phase 2: Feature 1 — The Event Engine

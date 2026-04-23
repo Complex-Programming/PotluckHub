@@ -7,6 +7,7 @@ import './App.css';
 
 function App() {
   return (
+      <>
       {/* The router controls which page component renders below the header */}
       <BrowserRouter>
         <Routes>
@@ -16,6 +17,7 @@ function App() {
           <Route path="/recipes" element={<RecipeLibrary />} />
         </Routes>
       </BrowserRouter>
+      </>
   );
 }
 
