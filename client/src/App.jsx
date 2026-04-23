@@ -10,7 +10,7 @@ function App() {
   return (
       <>
       {/* The router controls which page component renders below the header */}
-      <HashRouter>
+      <BrowserRouter>
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/register" element={<Register />} />
@@ -18,7 +18,7 @@ function App() {
           <Route path="/recipes" element={<RecipeLibrary />} />
           <Route path="/create-event" element={<CreateEvent />} />
         </Routes>
-      </HashRouter>
+      </BrowserRouter>
       </>
   );
 }
