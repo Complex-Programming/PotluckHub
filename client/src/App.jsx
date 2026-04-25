@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router';
+import { BrowserRouter, HashRouter, Routes, Route } from 'react-router';
 import Homepage from './pages/Homepage';
 import Register from "./pages/Register";
 import EventDetail from './pages/EventDetail';
@@ -11,7 +11,7 @@ function App() {
   return (
     <>
       {/* The router controls which page component renders below the header */}
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/events" element={<Homepage />} />
@@ -21,7 +21,7 @@ function App() {
           <Route path="/create-event" element={<CreateEvent />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </>
   );
 }
