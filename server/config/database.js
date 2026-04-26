@@ -6,16 +6,19 @@ dotenv.config({ path: '../.env' })
 
 const { Pool } = pg
 
-const pool = new Pool({
-  // Use the .env variable FIRST, but if it doesn't exist, use the fallback string
-  host: process.env.PGHOST || 'your-fallback-host.render.com',
-  port: process.env.PGPORT || 5432,
-  user: process.env.PGUSER || 'your_db_username',
-  password: process.env.PGPASSWORD || 'your_db_password',
-  database: process.env.PGDATABASE || 'your_db_name',
-  ssl: { 
-      rejectUnauthorized: false 
-  }
-})
+const dbConfig = {
+    user: process.env.PGUSER,
+    password: process.env.PGPASSWORD,
+    database: process.env.PGDATABASE,
+    port: process.env.PGPORT || 5432,
+};
 
-export default pool
+// If GCP provides a Unix socket, use it. Otherwise, use the standard host IP.
+if (process.env.INSTANCE_UNIX_SOCKET) {
+    dbConfig.host = process.env.INSTANCE_UNIX_SOCKET;
+} else {
+    dbConfig.host = process.env.PGHOST;
+}
+
+const pool = new Pool(dbConfig);
+export default pool;

@@ -40,3 +40,36 @@ export const getEventById = async (id) => {
         return null;
     }
 };
+export const getEventAttendees = async (id) => {
+    try {
+        const response = await fetch(`${BASE_URL}/api/events/${id}/attendees`);
+        if (!response.ok) throw new Error('Failed to fetch attendees');
+        return await response.json();
+    } catch (error) {
+        return [];
+    }
+};
+
+export const submitRSVP = async (eventId, userId) => {
+    await fetch(`${BASE_URL}/api/events/${eventId}/rsvp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userId })
+    });
+};
+
+export const cancelRSVP = async (eventId, userId) => {
+    await fetch(`${BASE_URL}/api/events/${eventId}/rsvp`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userId })
+    });
+};
+export const getAllUsers = async () => {
+    try {
+        const response = await fetch(`${BASE_URL}/api/users`);
+        return await response.json();
+    } catch (error) {
+        return [];
+    }
+};

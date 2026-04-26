@@ -1,12 +1,3 @@
-Phase 3: Feature 2 — The Recipe Catalog
-
-Goal: Users can view the shared cookbook. We need dishes existing in the database before anyone can claim them.
-
-    Backend (Dongping): Build the controllers/recipes.js logic. Write the SQL queries to GET all recipes and POST a new recipe.
-
-    Frontend (Eman): Build the services/RecipesAPI.js connection. Create the RecipeLibrary page that displays all the dishes as cards or a list. Add a simple form to submit a new recipe.
-
-    Integration Checkpoint: Eman and Dongping verify that a new recipe added via the UI shows up in the database.
 
 Phase 4: Feature 3 — The People & RSVPs
 
@@ -35,3 +26,15 @@ Goal: Add the custom flair once the core app is flawlessly working.
     Backend (Tom/Dongping): Add the Review/Rating table logic if your team still wants to allow users to rate dishes after the event.
 
     Whole Team: Record the final GIF walkthrough for the README.
+Phase 6+
+The Frontend Button: James will delete the <select> dropdown and install @react-oauth/google. He will drop a <GoogleLogin /> button onto the header.
+
+The Handshake: When a user clicks that button and logs in with their Gmail, Google sends James a massive string of gibberish called a JWT (JSON Web Token).
+
+The Backend Verification: James sends that JWT to Tom's API (POST /api/auth/google). Tom uses Google's official Node.js library to decode it. This guarantees the user isn't faking their identity.
+
+The Database Sync: Tom looks at the decoded email (e.g., james@gmail.com).
+
+If that email is already in the user table, Tom logs them in.
+
+If they are brand new, Tom runs INSERT INTO user (name, email) VALUES ... to add them.

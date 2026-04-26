@@ -1,56 +1,51 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router';
-import { getEventById } from '../services/EventsAPI';
-import { createRsvp, deleteRsvp, getAttendeesByEventId } from '../services/RSVPsAPI';
+import { getEventById, getEventAttendees, submitRSVP, cancelRSVP } from '../services/EventsAPI';
 import '../styles/EventDetail.css';
 
-export default function EventDetail() {
+export default function EventDetail({ currentUser }) {
     const { id } = useParams();
-    const currentUserId = 1;
     const [event, setEvent] = useState(null);
     const [attendees, setAttendees] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [rsvpLoading, setRsvpLoading] = useState(false);
     const [rsvpError, setRsvpError] = useState('');
 
-    // Fetch the specific event data based on the URL ID
     useEffect(() => {
-        const fetchEvent = async () => {
-            const [eventData, attendeesData] = await Promise.all([
+        const fetchData = async () => {
+            const [eventData, attendeeData] = await Promise.all([
                 getEventById(id),
-                getAttendeesByEventId(id)
+                getEventAttendees(id)
             ]);
-
             setEvent(eventData);
-            setAttendees(attendeesData);
+            setAttendees(attendeeData);
             setLoading(false);
         };
-        fetchEvent();
+        fetchData();
     }, [id]);
 
-    const isRsvped = attendees.some((attendee) => attendee.id === currentUserId);
+    const isAttending = attendees.some(person => person.id === currentUser.id);
 
     const handleRsvpToggle = async () => {
-        setRsvpLoading(true);
         setRsvpError('');
-
-        try {
-            if (isRsvped) {
-                await deleteRsvp(currentUserId, id);
-            } else {
-                await createRsvp(currentUserId, id);
+        if (isAttending) {
+            setAttendees(prev => prev.filter(person => person.id !== currentUser.id));
+            try {
+                await cancelRSVP(id, currentUser.id);
+            } catch {
+                setAttendees(prev => [...prev, currentUser]);
+                setRsvpError('Could not update RSVP. Please try again.');
             }
-
-            const attendeesData = await getAttendeesByEventId(id);
-            setAttendees(attendeesData);
-        } catch {
-            setRsvpError('Could not update RSVP. Please try again.');
-        } finally {
-            setRsvpLoading(false);
+        } else {
+            setAttendees(prev => [...prev, currentUser]);
+            try {
+                await submitRSVP(id, currentUser.id);
+            } catch {
+                setAttendees(prev => prev.filter(person => person.id !== currentUser.id));
+                setRsvpError('Could not update RSVP. Please try again.');
+            }
         }
     };
 
-    // Handle loading and error states
     if (loading) return <h2 className="event-detail-status">Loading event details...</h2>;
     if (!event) return <h2 className="event-detail-status">Event not found!</h2>;
 
@@ -61,11 +56,9 @@ export default function EventDetail() {
             </Link>
 
             <div className="event-detail-card">
-                {/* Event Header */}
                 <h1 className="event-detail-title">{event.title}</h1>
                 <p className="event-detail-description">{event.description}</p>
 
-                {/* Event Metadata Grid */}
                 <div className="event-detail-meta-grid">
                     <div><strong>📅 Date:</strong> {event.event_date ? event.event_date.split('T')[0] : 'TBD'}</div>
                     <div><strong>⏰ Time:</strong> {event.event_time || 'TBD'}</div>
@@ -75,35 +68,30 @@ export default function EventDetail() {
 
                 <hr className="event-detail-divider" />
 
-                {/* --- FUTURE PHASE PLACEHOLDERS --- */}
-
-                {/* Feature 3: RSVPs */}
                 <section className="event-detail-section">
-                    <h2>Guest List</h2>
+                    <h2>Guest List ({attendees.length})</h2>
                     {attendees.length === 0 ? (
-                        <p className="event-detail-muted">No attendees yet.</p>
+                        <p className="event-detail-muted">No one has RSVP'd yet. Be the first!</p>
                     ) : (
                         <ul className="event-detail-attendee-list">
-                            {attendees.map((attendee) => (
-                                <li key={attendee.id}>
-                                    {attendee.name}
+                            {attendees.map(person => (
+                                <li key={person.id}>
+                                    👤 {person.name} {person.id === currentUser.id && <span className="event-detail-you-label">(You)</span>}
                                 </li>
                             ))}
                         </ul>
                     )}
 
                     <button
-                        className="btn-primary"
+                        className={isAttending ? 'btn-secondary' : 'btn-primary'}
                         onClick={handleRsvpToggle}
-                        disabled={rsvpLoading}
                         id="event-detail-rsvp-button"
                     >
-                        {rsvpLoading ? 'Updating...' : isRsvped ? 'Cancel RSVP' : 'RSVP to Event'}
+                        {isAttending ? 'Cancel RSVP' : "I'm Going!"}
                     </button>
                     {rsvpError && <p className="event-detail-error">{rsvpError}</p>}
                 </section>
 
-                {/* Feature 4: Dish Claiming */}
                 <section>
                     <h2>Potluck Menu</h2>
                     <p className="event-detail-muted"><em>Dish claiming feature coming in Phase 5...</em></p>
