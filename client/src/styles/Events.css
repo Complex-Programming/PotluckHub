@@ -1,0 +1,17 @@
+.heading-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+}
+
+.heading-container h1 {
+    font-size: 2rem;
+}
+
+.events-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-top: 1rem;
+}

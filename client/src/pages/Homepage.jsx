@@ -15,6 +15,7 @@ export default function Homepage() {
             if (data) {
                 setEvents(data);
             }
+            console.log(events)
         };
         fetchEvents();
     }, []);

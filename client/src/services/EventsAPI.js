@@ -1,6 +1,6 @@
 // Fallback to localhost if the env variable isn't set yet
 const BASE_URL = import.meta.env.VITE_API_BASE_URL
-
+console.log(BASE_URL)
 export const getAllEvents = async () => {
     try {
         const response = await fetch(`${BASE_URL}/api/events`);
