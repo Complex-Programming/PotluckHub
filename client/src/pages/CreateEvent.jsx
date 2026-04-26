@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { createEvent } from '../services/EventsAPI';
+import "../styles/CreateEvent.css"
 
 export default function CreateEvent() {
     const navigate = useNavigate();
@@ -30,9 +31,9 @@ export default function CreateEvent() {
     };
 
     return (
-        <main style={{ padding: '2rem', maxWidth: '600px', margin: '0 auto' }}>
+        <main className="main-container" style={{ padding: '2rem', maxWidth: '600px', margin: '0 auto' }}>
             <h2>Host a New Potluck</h2>
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <form className="event-form" onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 <input 
                     type="text" name="title" placeholder="Event Title" required 
                     value={formData.title} onChange={handleChange} 

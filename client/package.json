@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "lucide-react": "^1.8.0",
+    "plugin-react": "^0.0.1-security",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "react-router": "^7.14.2"

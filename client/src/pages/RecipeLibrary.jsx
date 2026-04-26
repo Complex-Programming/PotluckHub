@@ -7,7 +7,7 @@ const initialFormState = {
   description: '',
   category: 'Appetizer',
   image_url: ''
-};
+};  
 
 export default function RecipeLibrary() {
   const [recipes, setRecipes] = useState([]);
