@@ -1,0 +1,35 @@
+.card-container {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
+.title-container {
+    display: flex;
+}
+
+.title-container h1 {
+    font-size: 1.5rem;
+}
+
+.description-event-container {
+    display: flex; 
+    padding-bottom: 1rem;
+}
+
+.information-event-container {
+    display: flex;
+    gap: 2rem;
+}
+
+.hosted-by-container {
+    padding-top: 1rem;
+    display: flex;
+}
+
+.card-container:hover {
+    transition: .75s;
+    border: 1px solid var(--accent-border);
+}
