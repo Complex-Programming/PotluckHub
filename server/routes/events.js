@@ -5,7 +5,9 @@ import {
     createEvent, 
     getEventAttendees, // <-- New
     createRSVP,        // <-- New
-    deleteRSVP         // <-- New
+    deleteRSVP,         // <-- New
+    getEventDishes,     // <-- New
+    claimDish           // <-- New
 } from '../controllers/events.js';
 
 const router = express.Router();
@@ -18,5 +20,7 @@ router.post('/', createEvent);
 router.get('/:id/attendees', getEventAttendees);
 router.post('/:id/rsvp', createRSVP);
 router.delete('/:id/rsvp', deleteRSVP);
+router.get('/:id/dishes', getEventDishes);
+router.post('/:id/dishes', claimDish);
 
 export default router;

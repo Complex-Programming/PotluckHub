@@ -1,12 +1,4 @@
 
-Phase 4: Feature 3 — The People & RSVPs
-
-Goal: Users have profiles and can say they are attending an event.
-
-    Backend (Tom): Write the endpoint to fetch a User's profile. Build the RSVP POST/DELETE logic (inserting/removing records in the user_to_event join table).
-
-    Frontend (James): Build the UserProfile page. Update the EventDetail page to include an "RSVP" button that hits Tom's endpoint, and render a list of attendees.
-
 Phase 5: Feature 4 — The Dish Claiming (The MVP Polish)
 
 Goal: The core "Potluck" action. Users can select a recipe to bring to a specific event.
