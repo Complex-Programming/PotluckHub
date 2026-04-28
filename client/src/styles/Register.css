@@ -33,6 +33,8 @@
     font-size: 14px;
     font-weight: 600;
     color: #3c3c3c;
+    text-align: left;
+    padding-left: 8px;
 }
 
 .input-shell {
@@ -64,6 +66,7 @@
     font-size: 16px;
     color: #2f2f2f;
     transition: border-color 0.15s ease;
+    box-sizing: border-box;
 }
 
 .register-form input::placeholder {
