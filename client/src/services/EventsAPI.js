@@ -73,3 +73,34 @@ export const getAllUsers = async () => {
         return [];
     }
 };
+
+
+export const getEventDishes = async (eventId) => {
+    try {
+        const response = await fetch(`${BASE_URL}/api/events/${eventId}/dishes`);
+        if (!response.ok) throw new Error('Failed to fetch dishes');
+        return await response.json();
+    } catch (error) {
+        return [];
+    }
+};
+
+export const claimDish = async (eventId, recipeId, userId) => {
+    const response = await fetch(`${BASE_URL}/api/events/${eventId}/dishes`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ recipe_id: recipeId, user_id: userId })
+    });
+    if (!response.ok) throw new Error('Failed to claim dish');
+    return await response.json();
+};
+
+export const getAllRecipes = async () => {
+    try {
+        const response = await fetch(`${BASE_URL}/api/recipes`);
+        if (!response.ok) throw new Error('Failed to fetch recipes');
+        return await response.json();
+    } catch (error) {
+        return [];
+    }
+};
