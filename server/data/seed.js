@@ -77,7 +77,7 @@ async function seed() {
      */
 
     await client.query(`
-      CREATE TABLE IF NOT EXISTS recipe (
+      CREATE TABLE IF NOT EXISTS recipes (
         id          SERIAL PRIMARY KEY,
         name        VARCHAR(255) NOT NULL,
         description TEXT,
@@ -87,7 +87,7 @@ async function seed() {
     `)
 
     await client.query(`
-      CREATE TABLE IF NOT EXISTS event (
+      CREATE TABLE IF NOT EXISTS events (
         id          SERIAL PRIMARY KEY,
         host_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
         title       VARCHAR(255) NOT NULL,
@@ -102,7 +102,7 @@ async function seed() {
       CREATE TABLE IF NOT EXISTS user_to_event (
         id       SERIAL PRIMARY KEY,
         user_id  INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-        event_id INTEGER NOT NULL REFERENCES event(id) ON DELETE CASCADE,
+        event_id INTEGER NOT NULL REFERENCES events(id) ON DELETE CASCADE,
         UNIQUE (user_id, event_id)
       )
     `)
@@ -110,8 +110,8 @@ async function seed() {
     await client.query(`
       CREATE TABLE IF NOT EXISTS event_to_recipe (
         id        SERIAL PRIMARY KEY,
-        event_id  INTEGER NOT NULL REFERENCES event(id)    ON DELETE CASCADE,
-        recipe_id INTEGER NOT NULL REFERENCES recipe(id)   ON DELETE CASCADE,
+        event_id  INTEGER NOT NULL REFERENCES events(id)    ON DELETE CASCADE,
+        recipe_id INTEGER NOT NULL REFERENCES recipes(id)   ON DELETE CASCADE,
         user_id   INTEGER NOT NULL REFERENCES users(id)   ON DELETE CASCADE,
         UNIQUE (event_id, recipe_id)
       )
@@ -121,7 +121,7 @@ async function seed() {
       CREATE TABLE IF NOT EXISTS review (
         id        SERIAL PRIMARY KEY,
         user_id   INTEGER NOT NULL REFERENCES users(id)   ON DELETE CASCADE,
-        recipe_id INTEGER NOT NULL REFERENCES recipe(id)   ON DELETE CASCADE,
+        recipe_id INTEGER NOT NULL REFERENCES recipes(id)   ON DELETE CASCADE,
         rating    INTEGER CHECK (rating >= 1 AND rating <= 5),
         comment   TEXT
       )
@@ -133,8 +133,8 @@ async function seed() {
     await client.query('DELETE FROM review')
     await client.query('DELETE FROM event_to_recipe')
     await client.query('DELETE FROM user_to_event')
-    await client.query('DELETE FROM event')
-    await client.query('DELETE FROM recipe')
+    await client.query('DELETE FROM events')
+    await client.query('DELETE FROM recipes')
     await client.query('DELETE FROM users')
     console.log('Cleared existing rows')
 
@@ -151,7 +151,7 @@ async function seed() {
     const recipeIds = []
     for (const r of recipes) {
       const { rows } = await client.query(
-        `INSERT INTO recipe (name, description, category, image_url) VALUES ($1, $2, $3, $4) RETURNING id`,
+        `INSERT INTO recipes (name, description, category, image_url) VALUES ($1, $2, $3, $4) RETURNING id`,
         [r.name, r.description, r.category, r.image_url]
       )
       recipeIds.push(rows[0].id)
@@ -161,7 +161,7 @@ async function seed() {
     // const eventIds = []
     // for (const e of events) {
     //   const { rows } = await client.query(
-    //     `INSERT INTO event (host_id, title, description, event_date, event_time, location)
+    //     `INSERT INTO events (host_id, title, description, event_date, event_time, location)
     //      VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`,
     //     [userIds[e.host_index], e.title, e.description, e.event_date, e.event_time, e.location]
     //   )

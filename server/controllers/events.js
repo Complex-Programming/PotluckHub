@@ -3,7 +3,7 @@ import pool from '../config/database.js';
 // GET all events
 export const getAllEvents = async (req, res) => {
     try {
-        const results = await pool.query('SELECT * FROM event ORDER BY id ASC');
+        const results = await pool.query('SELECT * FROM events ORDER BY id ASC');
         res.status(200).json(results.rows);
     } catch (error) {
         console.error('Error fetching all events:', error);
@@ -15,7 +15,7 @@ export const getAllEvents = async (req, res) => {
 export const getEventById = async (req, res) => {
     try {
         const eventId = req.params.id;
-        const results = await pool.query('SELECT * FROM event WHERE id = $1', [eventId]);
+        const results = await pool.query('SELECT * FROM events WHERE id = $1', [eventId]);
 
         if (results.rows.length === 0) {
             return res.status(404).json({ error: 'Event not found' });
@@ -35,7 +35,7 @@ export const createEvent = async (req, res) => {
 
         // Use RETURNING * to immediately send back the newly created event data to the frontend
         const insertQuery = `
-            INSERT INTO event (host_id, title, description, event_date, event_time, location) 
+            INSERT INTO events (host_id, title, description, event_date, event_time, location) 
             VALUES ($1, $2, $3, $4, $5, $6) 
             RETURNING *
         `;
@@ -111,12 +111,12 @@ export const deleteRSVP = async (req, res) => {
 export const getEventDishes = async (req, res) => {
     try {
         const eventId = req.params.id;
-        // We JOIN 3 tables here: event_to_recipe, recipe, and user (to see WHO is bringing it)
+        // We JOIN 3 tables here: event_to_recipe, recipes, and user (to see WHO is bringing it)
         const query = `
-            SELECT recipe.id, recipe.name, recipe.description, "user".name as provider_name, "user".id as provider_id
-            FROM recipe
-            JOIN event_to_recipe ON recipe.id = event_to_recipe.recipe_id
-            JOIN "user" ON event_to_recipe.user_id = "user".id
+            SELECT recipes.id, recipes.name, recipes.description, users.name as provider_name, users.id as provider_id
+            FROM recipes
+            JOIN event_to_recipe ON recipes.id = event_to_recipe.recipe_id
+            JOIN users ON event_to_recipe.user_id = users.id
             WHERE event_to_recipe.event_id = $1
         `;
         const results = await pool.query(query, [eventId]);

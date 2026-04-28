@@ -3,7 +3,7 @@ import pool from '../config/database.js';
 // GET all recipes
 export const getAllRecipes = async (req, res) => {
     try {
-        const results = await pool.query('SELECT * FROM recipe ORDER BY id ASC');
+        const results = await pool.query('SELECT * FROM recipes ORDER BY id ASC');
         res.status(200).json(results.rows);
     } catch (error) {
         console.error('Error fetching all recipes:', error);
@@ -15,7 +15,7 @@ export const getAllRecipes = async (req, res) => {
 export const getRecipeById = async (req, res) => {
     try {
         const recipeId = req.params.id;
-        const results = await pool.query('SELECT * FROM recipe WHERE id = $1', [recipeId]);
+        const results = await pool.query('SELECT * FROM recipes WHERE id = $1', [recipeId]);
 
         if (results.rows.length === 0) {
             return res.status(404).json({ error: 'Recipe not found' });
@@ -38,7 +38,7 @@ export const createRecipe = async (req, res) => {
         }
 
         const insertQuery = `
-			INSERT INTO recipe (name, description, category, image_url)
+            INSERT INTO recipes (name, description, category, image_url)
 			VALUES ($1, $2, $3, $4)
 			RETURNING *
 		`;
