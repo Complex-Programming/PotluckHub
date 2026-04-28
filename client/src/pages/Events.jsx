@@ -24,7 +24,7 @@ export default function Events() {
 
             <div className="events-container">
                 {events.length === 0 ? (
-                    <p style={{ textAlign: ‘center’, marginTop: ‘2rem’ }}>No events found. Be the first to host one!</p>
+                    <p style={{ textAlign: 'center', marginTop: '2rem' }}>No events found. Be the first to host one!</p>
                 ) : (
                     events.map((event) => (
                         <EventCard key={event.id} event={event} />
