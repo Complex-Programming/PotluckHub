@@ -1,9 +1,0 @@
-runtime: nodejs24
-env: standard
-
-# Add Environment variables for connecting to the PostgreSQL database
-env_variables:
-  PGUSER: "postgres"
-  PGPASSWORD: "postgres"
-  PGDATABASE: "postgres"
-  INSTANCE_UNIX_SOCKET: "/cloudsql/css-436:us-west1:potluck-hub"

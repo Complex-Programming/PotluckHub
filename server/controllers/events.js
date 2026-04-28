@@ -107,3 +107,50 @@ export const deleteRSVP = async (req, res) => {
         res.status(500).json({ error: 'Failed to cancel RSVP' });
     }
 };
+// GET all dishes claimed for a specific event
+export const getEventDishes = async (req, res) => {
+    try {
+        const eventId = req.params.id;
+        // We JOIN 3 tables here: event_to_recipe, recipe, and user (to see WHO is bringing it)
+        const query = `
+            SELECT recipe.id, recipe.name, recipe.description, "user".name as provider_name, "user".id as provider_id
+            FROM recipe
+            JOIN event_to_recipe ON recipe.id = event_to_recipe.recipe_id
+            JOIN "user" ON event_to_recipe.user_id = "user".id
+            WHERE event_to_recipe.event_id = $1
+        `;
+        const results = await pool.query(query, [eventId]);
+        res.status(200).json(results.rows);
+    } catch (error) {
+        console.error('Error fetching dishes:', error);
+        res.status(500).json({ error: 'Failed to fetch dishes' });
+    }
+};
+
+// POST a dish claim to an event
+export const claimDish = async (req, res) => {
+    try {
+        const eventId = req.params.id;
+        const { recipe_id, user_id } = req.body;
+
+        // VALIDATION: Check if this exact recipe is already claimed for this event
+        const checkQuery = await pool.query(
+            'SELECT * FROM event_to_recipe WHERE event_id = $1 AND recipe_id = $2',
+            [eventId, recipe_id]
+        );
+
+        if (checkQuery.rows.length > 0) {
+            return res.status(400).json({ error: 'This dish is already claimed for this event!' });
+        }
+
+        // If not claimed, insert it!
+        await pool.query(
+            'INSERT INTO event_to_recipe (event_id, recipe_id, user_id) VALUES ($1, $2, $3)',
+            [eventId, recipe_id, user_id]
+        );
+        res.status(201).json({ message: 'Dish claimed successfully!' });
+    } catch (error) {
+        console.error('Error claiming dish:', error);
+        res.status(500).json({ error: 'Failed to claim dish' });
+    }
+};

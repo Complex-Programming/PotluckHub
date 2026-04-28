@@ -143,3 +143,5 @@ vite.config.ts.timestamp-*
 .vite/
 server/app.yaml
 server/app.yaml
+server/app.yaml
+*.yaml
