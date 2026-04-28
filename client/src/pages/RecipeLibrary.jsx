@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
+import { getAuthUser } from '../services/AuthAPI';
 import { createRecipe, getAllRecipes } from '../services/RecipesAPI';
 import '../styles/RecipeLibrary.css';
 
@@ -7,7 +9,7 @@ const initialFormState = {
   description: '',
   category: 'Appetizer',
   image_url: ''
-};  
+};
 
 export default function RecipeLibrary() {
   const [recipes, setRecipes] = useState([]);
@@ -16,6 +18,7 @@ export default function RecipeLibrary() {
   const [formData, setFormData] = useState(initialFormState);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showAddRecipeForm, setShowAddRecipeForm] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -67,7 +70,11 @@ export default function RecipeLibrary() {
           <button
             type="button"
             className="recipe-toggle-button"
-            onClick={() => setShowAddRecipeForm((prev) => !prev)}
+            onClick={async () => {
+              const auth = await getAuthUser();
+              if (!auth) return navigate('/login');
+              setShowAddRecipeForm((prev) => !prev);
+            }}
           >
             {showAddRecipeForm ? 'Hide Form' : 'Show Form'}
           </button>

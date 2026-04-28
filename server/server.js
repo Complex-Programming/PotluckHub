@@ -7,6 +7,10 @@ import recipesRouter from './routes/recipes.js';
 import usersRouter from './routes/users.js';
 import rsvpsRouter from './routes/rsvps.js';
 import registerRouter from './routes/register.js';
+import authRouter from './routes/auth.js';
+import session from 'express-session';
+import passport from 'passport';
+import { GitHub } from './config/auth.js';
 
 dotenv.config();
 
@@ -23,8 +27,25 @@ if (!Number.isInteger(PORT) || PORT <= 0 || PORT > 65535) {
 }
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    credentials: true,
+}));
 app.use(express.json());
+
+// session + passport
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'dev_secret',
+    resave: false,
+    saveUninitialized: false,
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+// configure passport strategy
+passport.use(GitHub);
+passport.serializeUser((user, done) => done(null, user));
+passport.deserializeUser((obj, done) => done(null, obj));
 
 
 app.get('/', (req, res) => {
@@ -35,7 +56,10 @@ app.use('/api/events', eventsRouter);
 app.use('/api/recipes', recipesRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/rsvps', rsvpsRouter);
-app.use('/api/auth', registerRouter);
+// auth routes (GitHub)
+app.use('/api/auth', authRouter);
+// keep register endpoint separate
+app.use('/api/register', registerRouter);
 
 // Basic health check endpoint
 app.get('/', (req, res) => {

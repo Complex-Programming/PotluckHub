@@ -1,10 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { createEvent } from '../services/EventsAPI';
 import "../styles/CreateEvent.css"
 
+import { getAuthUser } from '../services/AuthAPI';
+
 export default function CreateEvent() {
     const navigate = useNavigate();
+    useEffect(() => {
+        (async () => {
+            const auth = await getAuthUser();
+            if (!auth) navigate('/login');
+        })();
+    }, [navigate]);
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -34,25 +42,25 @@ export default function CreateEvent() {
         <main className="main-container" style={{ padding: '2rem', maxWidth: '600px', margin: '0 auto' }}>
             <h2>Host a New Potluck</h2>
             <form className="event-form" onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <input 
-                    type="text" name="title" placeholder="Event Title" required 
-                    value={formData.title} onChange={handleChange} 
+                <input
+                    type="text" name="title" placeholder="Event Title" required
+                    value={formData.title} onChange={handleChange}
                 />
-                <textarea 
+                <textarea
                     name="description" placeholder="What are we celebrating?" required
-                    value={formData.description} onChange={handleChange} 
+                    value={formData.description} onChange={handleChange}
                 />
-                <input 
+                <input
                     type="date" name="event_date" required
-                    value={formData.event_date} onChange={handleChange} 
+                    value={formData.event_date} onChange={handleChange}
                 />
-                <input 
+                <input
                     type="time" name="event_time" required
-                    value={formData.event_time} onChange={handleChange} 
+                    value={formData.event_time} onChange={handleChange}
                 />
-                <input 
+                <input
                     type="text" name="location" placeholder="Location (e.g., Tom's House)" required
-                    value={formData.location} onChange={handleChange} 
+                    value={formData.location} onChange={handleChange}
                 />
                 <button type="submit" className="btn-primary">Create Event</button>
             </form>

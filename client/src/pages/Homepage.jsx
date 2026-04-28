@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "../styles/Homepage.css";
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
+import { getAuthUser } from '../services/AuthAPI';
 import { CalendarDays, ChefHat, Users } from 'lucide-react';
 import { getAllEvents } from '../services/EventsAPI';
 
@@ -20,6 +21,8 @@ export default function Homepage() {
         fetchEvents();
     }, []);
 
+    const navigate = useNavigate();
+
     return (
         <div className="homepage-container">
             <header className="homepage-header-nav">
@@ -32,7 +35,14 @@ export default function Homepage() {
             <div className="hero-container">
                 <h1>Plan perfect potlucks, <br /> every time</h1>
                 <p>Coordinate dishes, track RSVPs, and share recipes with your community. No more duplicate dishes or forgotten plates.</p>
-                <Link to="/create-event" className="btn-primary">Host an Event</Link>
+                <button
+                    className="btn-primary"
+                    onClick={async () => {
+                        const auth = await getAuthUser();
+                        if (auth) navigate('/create-event');
+                        else navigate('/login');
+                    }}
+                >Host an Event</button>
             </div>
 
             {/* FEATURE CARDS */}
@@ -88,7 +98,7 @@ export default function Homepage() {
             <section className="cta-container">
                 <h2>Ready to get started?</h2>
                 <p>Join PotluckHub and start organizing your next gathering</p>
-                <Link to="/register" className="btn-primary">Create your account</Link>
+                <Link to="/login" className="btn-primary">Login</Link>
             </section>
 
             <footer>

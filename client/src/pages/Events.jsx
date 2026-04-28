@@ -1,9 +1,12 @@
 import React from "react";
 import EventCard from "../components/EventCard";
 import "../styles/Events.css"
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { getAuthUser } from '../services/AuthAPI';
 
 export default function Events() {
+
+    const navigate = useNavigate();
 
     const events = [
         {
@@ -43,13 +46,17 @@ export default function Events() {
             {/* HEADING OF THE PAGE */}
             <div className="heading-container">
                 <h1>Potluck Events</h1>
-                <Link to="/create-event">Create Event</Link>
+                <button onClick={async () => {
+                    const auth = await getAuthUser();
+                    if (auth) navigate('/create-event');
+                    else navigate('/login');
+                }}>Create Event</button>
             </div>
-            
+
             {/* LISTING OF ALL THE EVENTS */}
             <div className="events-container">
                 {events.map((event) => (
-                <EventCard key={event.id} event={event}/>
+                    <EventCard key={event.id} event={event} />
                 ))}
             </div>
         </>
