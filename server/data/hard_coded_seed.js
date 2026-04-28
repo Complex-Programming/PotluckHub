@@ -1,30 +1,30 @@
 import pg from 'pg'
 
 const pool = new pg.Pool({
-  user:     'postgres',
+  user: 'postgres',
   password: 'postgres',
-  host:     '34.82.218.175',
-  port:     5432,
+  host: '34.82.218.175',
+  port: 5432,
   database: 'postgres',
 })
 
 const users = [
-  { name: 'Alice Nguyen',  bio: 'Home cook obsessed with Southeast Asian flavors.', email: 'alice@example.com' },
-  { name: 'Marcus Bell',   bio: 'Grill master and weekend baker.',                  email: 'marcus@example.com' },
-  { name: 'Sofia Reyes',   bio: 'Plant-based food enthusiast.',                     email: 'sofia@example.com' },
+  { name: 'Alice Nguyen', bio: 'Home cook obsessed with Southeast Asian flavors.', email: 'alice@example.com' },
+  { name: 'Marcus Bell', bio: 'Grill master and weekend baker.', email: 'marcus@example.com' },
+  { name: 'Sofia Reyes', bio: 'Plant-based food enthusiast.', email: 'sofia@example.com' },
 ]
 
 const recipes = [
-  { name: 'Vietnamese Spring Rolls',   description: 'Fresh rice paper rolls with shrimp, herbs, and peanut dipping sauce.', category: 'Appetizer',  image_url: null },
-  { name: 'Smoked BBQ Brisket',        description: 'Low-and-slow smoked brisket with a dry rub and tangy mop sauce.',       category: 'Main',       image_url: null },
-  { name: 'Mango Avocado Salad',       description: 'Light salad with mango, avocado, red onion, and lime vinaigrette.',     category: 'Side',       image_url: null },
-  { name: 'Banana Pudding',            description: 'Classic Southern banana pudding with vanilla wafers and whipped cream.', category: 'Dessert',    image_url: null },
-  { name: 'Lentil Coconut Curry',      description: 'Creamy red lentil curry with coconut milk, ginger, and tomatoes.',      category: 'Main',       image_url: null },
+  { name: 'Vietnamese Spring Rolls', description: 'Fresh rice paper rolls with shrimp, herbs, and peanut dipping sauce.', category: 'Appetizer', image_url: null },
+  { name: 'Smoked BBQ Brisket', description: 'Low-and-slow smoked brisket with a dry rub and tangy mop sauce.', category: 'Main', image_url: null },
+  { name: 'Mango Avocado Salad', description: 'Light salad with mango, avocado, red onion, and lime vinaigrette.', category: 'Side', image_url: null },
+  { name: 'Banana Pudding', description: 'Classic Southern banana pudding with vanilla wafers and whipped cream.', category: 'Dessert', image_url: null },
+  { name: 'Lentil Coconut Curry', description: 'Creamy red lentil curry with coconut milk, ginger, and tomatoes.', category: 'Main', image_url: null },
 ]
 
 const events = [
-  { host_index: 0, title: 'Spring Potluck',      description: 'Celebrate spring with fresh seasonal dishes!',       event_date: '2026-05-10', event_time: '17:00', location: '123 Maple St, Seattle, WA' },
-  { host_index: 1, title: 'Backyard BBQ Bash',   description: 'Grilled everything — bring a side or dessert.',      event_date: '2026-06-14', event_time: '14:00', location: '456 Oak Ave, Portland, OR' },
+  { host_index: 0, title: 'Spring Potluck', description: 'Celebrate spring with fresh seasonal dishes!', event_date: '2026-05-10', event_time: '17:00', location: '123 Maple St, Seattle, WA' },
+  { host_index: 1, title: 'Backyard BBQ Bash', description: 'Grilled everything — bring a side or dessert.', event_date: '2026-06-14', event_time: '14:00', location: '456 Oak Ave, Portland, OR' },
   { host_index: 2, title: 'Plant-Based Potluck', description: 'All vegan, all delicious. Show off your best dish!', event_date: '2026-07-04', event_time: '12:00', location: '789 Pine Rd, Austin, TX' },
 ]
 
@@ -52,7 +52,7 @@ async function seed() {
   const client = await pool.connect()
   try {
     await client.query(`
-      CREATE TABLE IF NOT EXISTS "user" (
+      CREATE TABLE IF NOT EXISTS users (
         id    SERIAL PRIMARY KEY,
         name  VARCHAR(255) NOT NULL,
         bio   TEXT,
@@ -69,7 +69,7 @@ async function seed() {
     await client.query(`
       CREATE TABLE IF NOT EXISTS event (
         id          SERIAL PRIMARY KEY,
-        host_id     INTEGER NOT NULL REFERENCES "user"(id) ON DELETE CASCADE,
+        host_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
         title       VARCHAR(255) NOT NULL,
         description TEXT,
         event_date  DATE,
@@ -79,7 +79,7 @@ async function seed() {
     await client.query(`
       CREATE TABLE IF NOT EXISTS user_to_event (
         id       SERIAL PRIMARY KEY,
-        user_id  INTEGER NOT NULL REFERENCES "user"(id)  ON DELETE CASCADE,
+        user_id  INTEGER NOT NULL REFERENCES users(id)  ON DELETE CASCADE,
         event_id INTEGER NOT NULL REFERENCES event(id)   ON DELETE CASCADE,
         UNIQUE (user_id, event_id)
       )`)
@@ -88,13 +88,13 @@ async function seed() {
         id        SERIAL PRIMARY KEY,
         event_id  INTEGER NOT NULL REFERENCES event(id)  ON DELETE CASCADE,
         recipe_id INTEGER NOT NULL REFERENCES recipe(id) ON DELETE CASCADE,
-        user_id   INTEGER NOT NULL REFERENCES "user"(id) ON DELETE CASCADE,
+        user_id   INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
         UNIQUE (event_id, recipe_id)
       )`)
     await client.query(`
       CREATE TABLE IF NOT EXISTS review (
         id        SERIAL PRIMARY KEY,
-        user_id   INTEGER NOT NULL REFERENCES "user"(id)   ON DELETE CASCADE,
+        user_id   INTEGER NOT NULL REFERENCES users(id)   ON DELETE CASCADE,
         recipe_id INTEGER NOT NULL REFERENCES recipe(id)   ON DELETE CASCADE,
         rating    INTEGER CHECK (rating >= 1 AND rating <= 5),
         comment   TEXT
@@ -106,13 +106,13 @@ async function seed() {
     await client.query('DELETE FROM user_to_event')
     await client.query('DELETE FROM event')
     await client.query('DELETE FROM recipe')
-    await client.query('DELETE FROM "user"')
+    await client.query('DELETE FROM users')
     console.log('Cleared existing rows')
 
     const userIds = []
     for (const u of users) {
       const { rows } = await client.query(
-        `INSERT INTO "user" (name, bio, email) VALUES ($1, $2, $3) RETURNING id`,
+        `INSERT INTO users (name, bio, email) VALUES ($1, $2, $3) RETURNING id`,
         [u.name, u.bio, u.email])
       userIds.push(rows[0].id)
     }

@@ -9,7 +9,7 @@ export const getUserProfile = async (req, res) => {
         }
 
         const userResult = await pool.query(
-            'SELECT id, name, bio, email FROM "user" WHERE id = $1',
+            'SELECT id, name, bio, email FROM users WHERE id = $1',
             [userId]
         );
 
@@ -46,7 +46,7 @@ export const getUserProfile = async (req, res) => {
 };
 export const getAllUsers = async (req, res) => {
     try {
-        const results = await pool.query('SELECT id, name FROM "user" ORDER BY id ASC');
+        const results = await pool.query('SELECT id, name FROM users ORDER BY id ASC');
         res.status(200).json(results.rows);
     } catch (error) {
         console.error('Error fetching users:', error);

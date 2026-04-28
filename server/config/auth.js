@@ -3,7 +3,7 @@ import { Strategy as GitHubStrategy } from "passport-github2"
 const options = {
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: 'http://localhost:8080/api/auth/github/callback'
+    callbackURL: process.env.GITHUB_CALLBACK_URL || 'http://localhost:8080/api/auth/github/callback'
 }
 
 
@@ -17,14 +17,14 @@ const verify = async (accessToken, refreshToken, profile, callback) => {
     }
     try {
         const results = await pool.query(
-            'SELECT * FROM "user" WHERE username = $1',
+            'SELECT * FROM users WHERE username = $1',
             [userData.username]
         )
         const user = results.rows[0]
 
         if (!user) {
             const results = await pool.query(
-                `INSERT INTO "user" (githubid, username, avatarurl, accesstoken, bio)
+                `INSERT INTO users (githubid, username, avatarurl, accesstoken, bio)
                 VALUES($1, $2, $3, $4, $5)
                 RETURNING *`,
                 [userData.githubId, userData.username, userData.avatarUrl, accessToken, ""]

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "../styles/Homepage.css";
 import { Link, useNavigate } from 'react-router';
-import { getAuthUser } from '../services/AuthAPI';
+import { getAuthUser, logout } from '../services/AuthAPI';
 import { CalendarDays, ChefHat, Users } from 'lucide-react';
 import { getAllEvents } from '../services/EventsAPI';
 
@@ -16,12 +16,26 @@ export default function Homepage() {
             if (data) {
                 setEvents(data);
             }
-            console.log(events)
+            // console.log(events)
         };
         fetchEvents();
     }, []);
 
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        (async () => {
+            const auth = await getAuthUser();
+            setIsLoggedIn(Boolean(auth));
+        })();
+    }, []);
+
+    const handleLogout = async () => {
+        await logout();
+        setIsLoggedIn(false);
+        navigate('/login');
+    };
 
     return (
         <div className="homepage-container">
@@ -29,6 +43,13 @@ export default function Homepage() {
                 <Link to="/events" className="header-nav-button">Events</Link>
                 <Link to="/recipes" className="header-nav-button">Recipes</Link>
                 <Link to="/profile" className="header-nav-button">Profile</Link>
+                <div style={{ marginLeft: 'auto' }}>
+                    {!isLoggedIn ? (
+                        <Link to="/login" className="header-nav-button">Login</Link>
+                    ) : (
+                        <button onClick={handleLogout} className="header-nav-button">Logout</button>
+                    )}
+                </div>
             </header>
 
             {/* HERO */}
@@ -95,11 +116,13 @@ export default function Homepage() {
             </section>
 
             {/* CTA BANNER */}
-            <section className="cta-container">
-                <h2>Ready to get started?</h2>
-                <p>Join PotluckHub and start organizing your next gathering</p>
-                <Link to="/login" className="btn-primary">Login</Link>
-            </section>
+            {!isLoggedIn && (
+                <section className="cta-container">
+                    <h2>Ready to get started?</h2>
+                    <p>Join PotluckHub and start organizing your next gathering</p>
+                    <Link to="/login" className="btn-primary">Login</Link>
+                </section>
+            )}
 
             <footer>
                 2026 PotluckHub.

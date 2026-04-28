@@ -48,25 +48,25 @@ async function seed() {
   try {
 
     // drop all tables
-    // const { rows } = await client.query(`
-    //   SELECT string_agg(quote_ident(tablename), ', ') AS tables
-    //   FROM pg_tables
-    //   WHERE schemaname = 'public'
-    // `);
+    const { rows } = await client.query(`
+      SELECT string_agg(quote_ident(tablename), ', ') AS tables
+      FROM pg_tables
+      WHERE schemaname = 'public'
+    `);
 
-    // if (rows[0].tables) {
-    //   await client.query(`DROP TABLE ${rows[0].tables} CASCADE`);
-    // }
+    if (rows[0].tables) {
+      await client.query(`DROP TABLE ${rows[0].tables} CASCADE`);
+    }
 
     await client.query(`
-      CREATE TABLE IF NOT EXISTS "user" (
+      CREATE TABLE IF NOT EXISTS users (
         id    SERIAL PRIMARY KEY,
         githubid integer NOT NULL,
         username varchar(100) NOT NULL,
         avatarurl varchar(500) NOT NULL,
         accesstoken varchar(500) NOT NULL,
         bio TEXT
-      )
+      );
     `)
 
     /**
@@ -89,7 +89,7 @@ async function seed() {
     await client.query(`
       CREATE TABLE IF NOT EXISTS event (
         id          SERIAL PRIMARY KEY,
-        host_id     INTEGER NOT NULL REFERENCES "user"(id) ON DELETE CASCADE,
+        host_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
         title       VARCHAR(255) NOT NULL,
         description TEXT,
         event_date  DATE,
@@ -101,7 +101,7 @@ async function seed() {
     await client.query(`
       CREATE TABLE IF NOT EXISTS user_to_event (
         id       SERIAL PRIMARY KEY,
-        user_id  INTEGER NOT NULL REFERENCES "user"(id) ON DELETE CASCADE,
+        user_id  INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
         event_id INTEGER NOT NULL REFERENCES event(id) ON DELETE CASCADE,
         UNIQUE (user_id, event_id)
       )
@@ -112,7 +112,7 @@ async function seed() {
         id        SERIAL PRIMARY KEY,
         event_id  INTEGER NOT NULL REFERENCES event(id)    ON DELETE CASCADE,
         recipe_id INTEGER NOT NULL REFERENCES recipe(id)   ON DELETE CASCADE,
-        user_id   INTEGER NOT NULL REFERENCES "user"(id)   ON DELETE CASCADE,
+        user_id   INTEGER NOT NULL REFERENCES users(id)   ON DELETE CASCADE,
         UNIQUE (event_id, recipe_id)
       )
     `)
@@ -120,7 +120,7 @@ async function seed() {
     await client.query(`
       CREATE TABLE IF NOT EXISTS review (
         id        SERIAL PRIMARY KEY,
-        user_id   INTEGER NOT NULL REFERENCES "user"(id)   ON DELETE CASCADE,
+        user_id   INTEGER NOT NULL REFERENCES users(id)   ON DELETE CASCADE,
         recipe_id INTEGER NOT NULL REFERENCES recipe(id)   ON DELETE CASCADE,
         rating    INTEGER CHECK (rating >= 1 AND rating <= 5),
         comment   TEXT
@@ -135,13 +135,13 @@ async function seed() {
     await client.query('DELETE FROM user_to_event')
     await client.query('DELETE FROM event')
     await client.query('DELETE FROM recipe')
-    await client.query('DELETE FROM "user"')
+    await client.query('DELETE FROM users')
     console.log('Cleared existing rows')
 
     // const userIds = []
     // for (const u of users) {
     //   const { rows } = await client.query(
-    //     `INSERT INTO "user" (name, bio, email) VALUES ($1, $2, $3) RETURNING id`,
+    //     `INSERT INTO users (name, bio, email) VALUES ($1, $2, $3) RETURNING id`,
     //     [u.name, u.bio, u.email]
     //   )
     //   userIds.push(rows[0].id)

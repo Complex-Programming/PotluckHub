@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
+import { logout } from '../services/AuthAPI';
 import { getUserProfile } from '../services/UsersAPI';
 import { getAuthUser } from '../services/AuthAPI';
 import '../styles/Profile.css';
@@ -8,12 +9,14 @@ export default function Profile() {
     const fallbackUserId = 1;
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchProfile = async () => {
             // try session-based auth first
             const auth = await getAuthUser();
             if (!auth) {
+                setLoading(false);
                 navigate('/login');
                 return;
             }
@@ -51,6 +54,10 @@ export default function Profile() {
             <h1>{profile.name}</h1>
             {profile.email && <p className="profile-email">{profile.email}</p>}
             <p className="profile-bio">{profile.bio || 'No bio added yet.'}</p>
+
+            <div style={{ margin: '1rem 0' }}>
+                <button onClick={async () => { await logout(); navigate('/login'); }} className="btn-primary">Logout</button>
+            </div>
 
             <section className="profile-section">
                 <h2 className="profile-section-title">Hosted Events</h2>

@@ -10,8 +10,8 @@ export const getAttendeesByEventId = async (req, res) => {
 
         const result = await pool.query(
             `SELECT u.id, u.name, u.email
-       FROM user_to_event ute
-       JOIN "user" u ON u.id = ute.user_id
+    FROM user_to_event ute
+    JOIN users u ON u.id = ute.user_id
        WHERE ute.event_id = $1
        ORDER BY u.name ASC`,
             [eventId]
