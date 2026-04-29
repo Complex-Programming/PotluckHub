@@ -41,7 +41,7 @@ export default function EventDetail({ currentUser }) {
     };
 
     const handleClaimDish = async (recipe) => {
-        const optimisticDish = { ...recipe, provider_id: currentUser.id, provider_name: currentUser.name };
+        const optimisticDish = { ...recipe, provider_id: currentUser.id, provider_name: currentUser.username };
         setDishes(prev => [...prev, optimisticDish]);
         setIsModalOpen(false);
         try {

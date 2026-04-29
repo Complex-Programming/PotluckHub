@@ -113,7 +113,7 @@ export const getEventDishes = async (req, res) => {
         const eventId = req.params.id;
         // We JOIN 3 tables here: event_to_recipe, recipes, and user (to see WHO is bringing it)
         const query = `
-            SELECT recipes.id, recipes.name, recipes.description, users.name as provider_name, users.id as provider_id
+            SELECT recipes.id, recipes.name, recipes.description, users.username as provider_name, users.id as provider_id
             FROM recipes
             JOIN event_to_recipe ON recipes.id = event_to_recipe.recipe_id
             JOIN users ON event_to_recipe.user_id = users.id

@@ -2,9 +2,12 @@ import { useState, useEffect } from "react";
 import EventCard from "../components/EventCard";
 import "../styles/Events.css"
 import { getAllEvents } from "../services/EventsAPI";
+import { getAuthUser } from "../services/AuthAPI"
+import { useNavigate } from "react-router"; 
 
 export default function Events() {
     const [events, setEvents] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchEvents = async () => {
