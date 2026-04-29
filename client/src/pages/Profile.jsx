@@ -105,14 +105,14 @@ export default function Profile() {
                         />
                         <div className="profile-bio-actions">
                             <button
-                                className="btn-primary profile-button"
+                                className="profile-button"
                                 onClick={handleSaveBio}
                                 disabled={saving}
                             >
                                 {saving ? 'Saving...' : 'Save'}
                             </button>
                             <button
-                                className="btn-secondary profile-button"
+                                className="profile-button"
                                 onClick={() => {
                                     setBioDraft(profile.bio || '');
                                     setIsEditing(false);
