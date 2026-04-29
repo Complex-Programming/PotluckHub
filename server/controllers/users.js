@@ -9,7 +9,7 @@ export const getUserProfile = async (req, res) => {
         }
 
         const userResult = await pool.query(
-            'SELECT id, name, bio, email FROM users WHERE id = $1',
+            'SELECT id, username, bio, avatarurl FROM users WHERE id = $1',
             [userId]
         );
 
@@ -44,9 +44,45 @@ export const getUserProfile = async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch user profile' });
     }
 };
+
+export const updateUserBio = async (req, res) => {
+    try {
+        if (!req.user) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+
+        const userId = Number(req.params.id);
+        if (!Number.isInteger(userId) || userId <= 0) {
+            return res.status(400).json({ error: 'Invalid user id' });
+        }
+
+        if (Number(req.user.id) !== userId) {
+            return res.status(403).json({ error: 'Forbidden' });
+        }
+
+        const { bio } = req.body;
+        if (typeof bio !== 'string') {
+            return res.status(400).json({ error: 'Bio must be a string' });
+        }
+
+        const updated = await pool.query(
+            'UPDATE users SET bio = $1 WHERE id = $2 RETURNING id, username, bio, avatarurl',
+            [bio.trim(), userId]
+        );
+
+        if (updated.rows.length === 0) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.status(200).json(updated.rows[0]);
+    } catch (error) {
+        console.error('Error updating user bio:', error);
+        res.status(500).json({ error: 'Failed to update user bio' });
+    }
+};
 export const getAllUsers = async (req, res) => {
     try {
-        const results = await pool.query('SELECT id, name FROM users ORDER BY id ASC');
+        const results = await pool.query('SELECT id, username FROM users ORDER BY id ASC');
         res.status(200).json(results.rows);
     } catch (error) {
         console.error('Error fetching users:', error);

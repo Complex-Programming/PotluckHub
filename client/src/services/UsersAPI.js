@@ -10,3 +10,21 @@ export const getUserProfile = async (id) => {
         return null;
     }
 };
+
+export const updateUserBio = async (id, bio) => {
+    try {
+        const response = await fetch(`${BASE_URL}/api/users/${id}/bio`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({ bio }),
+        });
+        if (!response.ok) throw new Error('Failed to update user bio');
+        return await response.json();
+    } catch (error) {
+        console.error('Error updating user bio:', error);
+        return null;
+    }
+};

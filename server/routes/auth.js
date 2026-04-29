@@ -10,6 +10,8 @@ const router = express.Router()
 router.get("/login/success", (req, res) => {
     if (req.user) {
         res.status(200).json({ success: true, user: req.user })
+    } else {
+        res.status(404).json({ success: false, message: "not login"})
     }
 })
 

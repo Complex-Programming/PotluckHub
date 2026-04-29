@@ -20,19 +20,21 @@ function App() {
   useEffect(() => {
     const initialize = async () => {
       const authUser = await getAuthUser();
+      console.log("auth user:", authUser)
       if (authUser) {
+        console.log("setting authuser: ", authUser)
         setCurrentUser(authUser);
         return;
       }
 
       try {
         const dbUsers = await getAllUsers();
+        console.log("dbusers: ", dbUsers)
         if (dbUsers && dbUsers.length > 0) {
           setUsers(dbUsers);
           setCurrentUser(dbUsers[0]);
-        } else {
-          setDbError(true);
-        }
+        } 
+        
       } catch {
         setDbError(true);
       }
@@ -40,6 +42,9 @@ function App() {
 
     initialize();
   }, []);
+  // console.log("all users: ", users)
+  // console.log("current user: ", currentUser)
+  // console.log("db error:", dbError)
 
   if (dbError) return <div style={{ padding: '2rem', textAlign: 'center' }}>❌ Could not connect to database. Is the backend running?</div>;
   // if (!currentUser) return <div style={{ padding: '2rem', textAlign: 'center' }}>Loading PotluckHub...</div>;
