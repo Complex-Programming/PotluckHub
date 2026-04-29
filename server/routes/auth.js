@@ -44,8 +44,8 @@ router.get("/github",
 
 router.get("/github/callback",
     passport.authenticate('github', {
-        successRedirect: `${CLIENT_URL}/`,
-        failureRedirect: `${CLIENT_URL}/`,
+        successRedirect: `${CLIENT_URL}/PotluckHub`,
+        failureRedirect: `${CLIENT_URL}/PotluckHub`,
     })
 )
 
