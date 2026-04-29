@@ -19,6 +19,37 @@
     color: #555;
 }
 
+.profile-bio-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.profile-bio-edit {
+    margin-bottom: 1.25rem;
+}
+
+.profile-bio-input {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border-radius: 8px;
+    border: 1px solid #d0d0d0;
+    resize: vertical;
+    font-family: inherit;
+}
+
+.profile-bio-actions {
+    margin-top: 0.75rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.profile-error {
+    margin-top: 0.5rem;
+    color: #c0392b;
+}
+
 .profile-section {
     margin-bottom: 1.5rem;
 }

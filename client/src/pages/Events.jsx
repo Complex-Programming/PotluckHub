@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import EventCard from "../components/EventCard";
 import "../styles/Events.css"
-import { Link } from "react-router";
 import { getAllEvents } from "../services/EventsAPI";
+import { getAuthUser } from "../services/AuthAPI"
+import { useNavigate } from "react-router"; 
 
 export default function Events() {
     const [events, setEvents] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchEvents = async () => {
@@ -19,7 +21,11 @@ export default function Events() {
         <>
             <div className="heading-container">
                 <h1>Potluck Events</h1>
-                <Link to="/create-event">Create Event</Link>
+                <button onClick={async () => {
+                    const auth = await getAuthUser();
+                    if (auth) navigate('/create-event');
+                    else navigate('/login');
+                }}>Create Event</button>
             </div>
 
             <div className="events-container">
