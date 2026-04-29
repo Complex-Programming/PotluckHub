@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import { logout } from '../services/AuthAPI';
 import { getUserProfile, updateUserBio } from '../services/UsersAPI';
 import { getAuthUser } from '../services/AuthAPI';
+import EventCard from '../components/EventCard';
 import '../styles/Profile.css';
 
 export default function Profile() {
-    const fallbackUserId = 1;
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
@@ -25,25 +25,18 @@ export default function Profile() {
                 return;
             }
 
-            if (auth) {
-                const simple = {
-                    id: auth.id,
-                    name: auth.username || auth.name || 'GitHub User',
-                    email: auth.email || '',
-                    bio: auth.bio || '',
-                    avatarUrl: auth.avatarUrl || auth.avatar_url || null,
-                    hosted_events: [],
-                    attending_events: [],
-                };
-                setProfile(simple);
-                setBioDraft(simple.bio || '');
-                setLoading(false);
-                return;
-            }
-            // fallback to DB user profile (shouldn't reach here because we redirect)
-            const data = await getUserProfile(fallbackUserId);
-            setProfile(data);
-            setBioDraft(data?.bio || '');
+            const data = await getUserProfile(auth.id);
+            const merged = {
+                id: auth.id,
+                name: auth.username || auth.name || data?.username || 'GitHub User',
+                email: auth.email || '',
+                bio: data?.bio ?? auth.bio ?? '',
+                avatarUrl: auth.avatarurl || auth.avatarUrl || auth.avatar_url || data?.avatarurl || null,
+                hosted_events: data?.hosted_events || [],
+                attending_events: data?.attending_events || [],
+            };
+            setProfile(merged);
+            setBioDraft(merged.bio || '');
             setLoading(false);
         };
 
@@ -80,53 +73,70 @@ export default function Profile() {
 
     return (
         <main className="profile-page">
-            {profile.avatarUrl && (
-                <img src={profile.avatarUrl} alt="avatar" style={{ width: 96, borderRadius: 48 }} />
-            )}
-            <h1>{profile.name}</h1>
-            {profile.email && <p className="profile-email">{profile.email}</p>}
-            {isEditing ? (
-                <div className="profile-bio-edit">
-                    <textarea
-                        className="profile-bio-input"
-                        value={bioDraft}
-                        onChange={(e) => setBioDraft(e.target.value)}
-                        rows={4}
-                        placeholder="Tell people about yourself..."
-                    />
-                    <div className="profile-bio-actions">
-                        <button
-                            className="btn-primary"
-                            onClick={handleSaveBio}
-                            disabled={saving}
-                        >
-                            {saving ? 'Saving...' : 'Save'}
-                        </button>
-                        <button
-                            className="btn-secondary"
-                            onClick={() => {
-                                setBioDraft(profile.bio || '');
-                                setIsEditing(false);
-                                setError('');
-                            }}
-                            disabled={saving}
-                        >
-                            Cancel
-                        </button>
+            <header className="profile-header">
+                <div className="profile-identity">
+                    {profile.avatarUrl && (
+                        <img className="profile-avatar" src={profile.avatarUrl} alt="avatar" />
+                    )}
+                    <div className="profile-identity-text">
+                        <h1>{profile.name}</h1>
+                        {profile.email && <p className="profile-email">{profile.email}</p>}
                     </div>
-                    {error && <p className="profile-error">{error}</p>}
                 </div>
-            ) : (
-                <div className="profile-bio-row">
-                    <p className="profile-bio">{profile.bio || 'No bio added yet.'}</p>
-                    <button className="btn-secondary" onClick={() => setIsEditing(true)}>
+                {!isEditing && (
+                    <button
+                        className="btn-secondary profile-button"
+                        onClick={() => setIsEditing(true)}
+                    >
                         Edit bio
                     </button>
-                </div>
-            )}
+                )}
+            </header>
+
+            <section className="profile-bio-card">
+                {isEditing ? (
+                    <div className="profile-bio-edit">
+                        <textarea
+                            className="profile-bio-input"
+                            value={bioDraft}
+                            onChange={(e) => setBioDraft(e.target.value)}
+                            rows={4}
+                            placeholder="Tell people about yourself..."
+                        />
+                        <div className="profile-bio-actions">
+                            <button
+                                className="btn-primary profile-button"
+                                onClick={handleSaveBio}
+                                disabled={saving}
+                            >
+                                {saving ? 'Saving...' : 'Save'}
+                            </button>
+                            <button
+                                className="btn-secondary profile-button"
+                                onClick={() => {
+                                    setBioDraft(profile.bio || '');
+                                    setIsEditing(false);
+                                    setError('');
+                                }}
+                                disabled={saving}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                        {error && <p className="profile-error">{error}</p>}
+                    </div>
+                ) : (
+                    <p className="profile-bio">{profile.bio || 'No bio added yet.'}</p>
+                )}
+            </section>
 
             <div style={{ margin: '1rem 0' }}>
-                <button onClick={async () => { await logout(); navigate('/login'); }} className="btn-primary">Logout</button>
+                <button
+                    onClick={async () => { await logout(); navigate('/login'); }}
+                    className="btn-primary profile-button"
+                >
+                    Logout
+                </button>
             </div>
 
             <section className="profile-section">
@@ -134,28 +144,24 @@ export default function Profile() {
                 {(!profile.hosted_events || profile.hosted_events.length === 0) ? (
                     <p>No hosted events yet.</p>
                 ) : (
-                    <ul className="profile-events-list">
+                    <div className="events-container">
                         {profile.hosted_events.map((event) => (
-                            <li key={event.id}>
-                                <Link to={`/events/${event.id}`}>{event.title}</Link>
-                            </li>
+                            <EventCard key={event.id} event={event} />
                         ))}
-                    </ul>
+                    </div>
                 )}
             </section>
 
-            <section>
+            <section className="profile-section">
                 <h2 className="profile-section-title">RSVPed Events</h2>
                 {(!profile.attending_events || profile.attending_events.length === 0) ? (
                     <p>No RSVPs yet.</p>
                 ) : (
-                    <ul className="profile-events-list">
+                    <div className="events-container">
                         {profile.attending_events.map((event) => (
-                            <li key={event.id}>
-                                <Link to={`/events/${event.id}`}>{event.title}</Link>
-                            </li>
+                            <EventCard key={event.id} event={event} />
                         ))}
-                    </ul>
+                    </div>
                 )}
             </section>
         </main>

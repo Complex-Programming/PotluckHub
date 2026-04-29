@@ -18,7 +18,7 @@ export const getUserProfile = async (req, res) => {
         }
 
         const hostedEventsResult = await pool.query(
-            `SELECT id, title, event_date, event_time, location
+            `SELECT id, title, description, event_date, event_time, location
           FROM events
        WHERE host_id = $1
        ORDER BY event_date ASC, event_time ASC`,
@@ -26,7 +26,7 @@ export const getUserProfile = async (req, res) => {
         );
 
         const attendingEventsResult = await pool.query(
-            `SELECT e.id, e.title, e.event_date, e.event_time, e.location
+            `SELECT e.id, e.title, e.description, e.event_date, e.event_time, e.location
           FROM user_to_event ute
           JOIN events e ON e.id = ute.event_id
        WHERE ute.user_id = $1

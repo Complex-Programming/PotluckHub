@@ -9,6 +9,20 @@
     font-size: 2rem;
 }
 
+.create-event-button {
+    text-decoration: none;
+    color: #111;
+    border: 1px solid #d4d4d8;
+    border-radius: 6px;
+    padding: 0.45rem 0.9rem;
+    background: #fff;
+    font-size: 0.9rem;
+}
+
+.create-event-button:hover {
+    background: #f4f4f5;
+}
+
 .events-container {
     display: flex;
     flex-direction: column;

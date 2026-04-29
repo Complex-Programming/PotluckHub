@@ -4,6 +4,7 @@
     padding: 1rem;
     border: 1px solid var(--border);
     box-shadow: var(--shadow);
+    cursor: pointer;
 }
 
 .title-container {
@@ -15,7 +16,7 @@
 }
 
 .description-event-container {
-    display: flex; 
+    display: flex;
     padding-bottom: 1rem;
 }
 
@@ -32,4 +33,9 @@
 .card-container:hover {
     transition: .75s;
     border: 1px solid var(--accent-border);
+}
+
+.card-container:focus-visible {
+    outline: 2px solid var(--accent-border);
+    outline-offset: 3px;
 }
