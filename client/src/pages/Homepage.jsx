@@ -70,21 +70,21 @@ export default function Homepage() {
             <section className="features-container">
                 <div className="feature-card">
                     <div className="card-icon">
-                        <CalendarDays size={18} color="var(--primary)" />
+                        <CalendarDays size={18} />
                     </div>
                     <h3>Create Events</h3>
                     <p>Set up potluck gatherings with date, time, and location. Invite guests and track RSVPs effortlessly.</p>
                 </div>
                 <div className="feature-card">
                     <div className="card-icon">
-                        <ChefHat size={18} color="var(--primary)" />
+                        <ChefHat size={18} />
                     </div>
                     <h3>Claim Dishes</h3>
                     <p>Browse the recipe library and claim what you'll bring. See what others are bringing in real-time.</p>
                 </div>
                 <div className="feature-card">
                     <div className="card-icon">
-                        <Users size={18} color="var(--primary)" />
+                        <Users size={18} />
                     </div>
                     <h3>Share Recipes</h3>
                     <p>Build a shared recipe library with your community. Rate and review dishes after each event.</p>

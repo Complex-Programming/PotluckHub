@@ -39,9 +39,9 @@ export default function CreateEvent() {
     };
 
     return (
-        <main className="main-container" style={{ padding: '2rem', maxWidth: '600px', margin: '0 auto' }}>
-            <h2>Host a New Potluck</h2>
-            <form className="event-form" onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <main className="main-container">
+            <h2 className="create-event-title">Host a New Potluck</h2>
+            <form className="event-form" onSubmit={handleSubmit}>
                 <input
                     type="text" name="title" placeholder="Event Title" required
                     value={formData.title} onChange={handleChange}

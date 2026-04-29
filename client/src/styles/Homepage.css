@@ -89,7 +89,7 @@
 }
 
 .card-icon {
-    background-color: #FFEDD5;
+    /* background-color: #FFEDD5; */
     width: 15%;
     display: flex;
     justify-content: center;

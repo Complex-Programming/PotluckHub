@@ -7,11 +7,20 @@ import pool from '../config/database.js'
 // ]
 
 const recipes = [
-  { name: 'Vietnamese Spring Rolls', description: 'Fresh rice paper rolls with shrimp, herbs, and peanut dipping sauce.', category: 'Appetizer', image_url: null },
-  { name: 'Smoked BBQ Brisket', description: 'Low-and-slow smoked brisket with a dry rub and tangy mop sauce.', category: 'Main', image_url: null },
-  { name: 'Mango Avocado Salad', description: 'Light salad with mango, avocado, red onion, and lime vinaigrette.', category: 'Side', image_url: null },
-  { name: 'Banana Pudding', description: 'Classic Southern banana pudding with vanilla wafers and whipped cream.', category: 'Dessert', image_url: null },
-  { name: 'Lentil Coconut Curry', description: 'Creamy red lentil curry with coconut milk, ginger, and tomatoes.', category: 'Main', image_url: null },
+  { name: 'Vietnamese Spring Rolls', description: 'Fresh rice paper rolls with shrimp, herbs, and peanut dipping sauce.', category: 'Appetizer', image_url: "https://images.unsplash.com/photo-1594020293082-20140e0af18d?q=80&w=1772&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+  { name: 'Smoked BBQ Brisket', description: 'Low-and-slow smoked brisket with a dry rub and tangy mop sauce.', category: 'Main', image_url: "https://images.unsplash.com/photo-1626114762019-e981765eb0bf?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+  { name: 'Mango Avocado Salad', description: 'Light salad with mango, avocado, red onion, and lime vinaigrette.', category: 'Side', image_url: "https://images.unsplash.com/photo-1562629609-49c10e58c2a6?q=80&w=1160&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+  { name: 'Banana Pudding', description: 'Classic Southern banana pudding with vanilla wafers and whipped cream.', category: 'Dessert', image_url: "https://images.unsplash.com/photo-1552637086-ce3bf3275c4c?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+  { name: 'Lentil Coconut Curry', description: 'Creamy red lentil curry with coconut milk, ginger, and tomatoes.', category: 'Main', image_url: "https://images.unsplash.com/photo-1611068120738-e3801fcaa00a?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+
+  { name: "Caprese Skewers", description: "Fresh mozzarella, tomatoes, and basil on skewers", category: "appetizer", image_url: "https://images.unsplash.com/photo-1608897013039-887f21d8c804?w=400&h=300&fit=crop" },
+  { name: "BBQ Pulled Pork", description: "Slow-cooked pork shoulder with tangy BBQ sauce", category: "main", image_url: "https://images.unsplash.com/photo-1558030006-450675393462?w=400&h=300&fit=crop" },
+  { name: "Vegetarian Lasagna", description: "Layers of pasta, vegetables, ricotta, and marinara", category: "main", image_url: "https://images.unsplash.com/photo-1574894709920-11b28e7367e3?w=400&h=300&fit=crop" },
+  { name: "Caesar Salad", description: "Crisp romaine with parmesan, croutons, and Caesar dressing", category: "side", image_url: "https://images.unsplash.com/photo-1546793665-c74683f339c1?w=400&h=300&fit=crop" },
+  { name: "Garlic Bread", description: "Toasted baguette with butter, garlic, and herbs", category: "side", image_url: "https://images.unsplash.com/photo-1573140401552-3fab0b24306f?w=400&h=300&fit=crop" },
+  { name: "Tiramisu", description: "Italian coffee-flavored dessert with mascarpone", category: "dessert", image_url: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&h=300&fit=crop" },
+  { name: "Iced Tea Pitcher", description: "Refreshing iced tea with lemon slices", category: "drink", image_url: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=300&fit=crop" },
+
 ]
 
 const events = [
