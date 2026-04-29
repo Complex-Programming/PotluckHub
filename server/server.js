@@ -27,6 +27,11 @@ if (!Number.isInteger(PORT) || PORT <= 0 || PORT > 65535) {
 }
 
 const app = express();
+const isProduction = process.env.NODE_ENV === 'production';
+if (isProduction) {
+    // Render/GCP sit behind a proxy; needed for secure cookies.
+    app.set('trust proxy', 1);
+}
 app.use(cors({
     origin: process.env.CLIENT_URL || 'http://localhost:5173',
     credentials: true,
@@ -38,9 +43,25 @@ app.use(session({
     secret: process.env.SESSION_SECRET || 'dev_secret',
     resave: false,
     saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        sameSite: isProduction ? 'none' : 'lax',
+        secure: isProduction,
+    },
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use((req, res, next) => {
+    if (req.path === '/api/auth/login/success') {
+        console.log('Auth success check', {
+            origin: req.get('origin') || null,
+            cookie: req.get('cookie') || null,
+            sessionID: req.sessionID || null,
+        });
+    }
+    next();
+});
 
 // configure passport strategy
 passport.use(GitHub);
